@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:new_portfolio/features/portfolio/presentation/shared/widgets/animated_background.dart';
+import 'package:new_portfolio/features/portfolio/presentation/shared/widgets/custom_nav_bar.dart';
 import 'package:new_portfolio/features/portfolio/presentation/widgets/hero_section.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -10,7 +12,13 @@ class PortfolioView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: ResponsiveBreakpoints.builder(
-        child: SingleChildScrollView(child: Column(children: [HeroSection()])),
+        child: Stack(
+          children: [
+            const AnimatedBackground(),
+            SingleChildScrollView(child: Column(children: [HeroSection()])),
+            const CustomNavBar(),
+          ],
+        ),
         breakpoints: [
           const Breakpoint(start: 0, end: 450, name: 'MOBILE'),
           const Breakpoint(start: 451, end: 800, name: 'TABLET'),
