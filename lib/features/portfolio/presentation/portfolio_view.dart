@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:new_portfolio/features/portfolio/presentation/providers/scroll_provider.dart';
-import 'package:new_portfolio/features/portfolio/presentation/shared/widgets/animated_background.dart';
-import 'package:new_portfolio/features/portfolio/presentation/shared/widgets/custom_nav_bar.dart';
+import 'package:new_portfolio/shared/widgets/animated_background.dart';
+import 'package:new_portfolio/shared/widgets/custom_nav_bar.dart';
 import 'package:new_portfolio/features/portfolio/presentation/widgets/about_section.dart';
 import 'package:new_portfolio/features/portfolio/presentation/widgets/experience_section.dart';
 import 'package:new_portfolio/features/portfolio/presentation/widgets/hero_section.dart';

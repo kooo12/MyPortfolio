@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:new_portfolio/features/portfolio/presentation/shared/widgets/glass_container.dart';
+import 'package:new_portfolio/features/portfolio/data/repositories/portfolio_repository.dart';
+import 'package:new_portfolio/features/portfolio/domain/models/portfolio_models.dart';
+import 'package:new_portfolio/shared/widgets/app_image.dart';
+import 'package:new_portfolio/shared/widgets/glass_container.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../providers/scroll_provider.dart';
 
@@ -16,8 +19,10 @@ class ExperienceSection extends ConsumerWidget {
     final isVisible = scrollOffset > size.height * 0.5;
     final padding = size.width < 600 ? 24.0 : 100.0;
 
+    final experiences = PortfolioRepository.data.experiences;
+
     return Container(
-      height: size.height,
+      // height: size.height,
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: padding),
       child: Column(
@@ -33,27 +38,18 @@ class ExperienceSection extends ConsumerWidget {
             ),
           ).animate(target: isVisible ? 1 : 0).fadeIn().slideX(begin: -0.1),
           const SizedBox(height: 50),
-          _ExperienceItem(
-            company: 'Tech Plus Solutions (TPS)',
-            role: 'Mid-Senior Flutter Developer',
-            period: '2022 - Present',
-            description:
-                'Driving high-performance mobile solutions. Specialized in complex architectural patterns and performance profiling.',
-            color: AppColors.primary,
-            isVisible: isVisible,
-            delay: 100,
-          ),
-          const SizedBox(height: 30),
-          _ExperienceItem(
-            company: 'Previous Professional Tenure',
-            role: 'Cross-Platform Developer',
-            period: '2020 - 2021',
-            description:
-                'Built scalable retail and fintech applications. Mastered multi-environment setups and CI/CD pipelines for Flutter.',
-            color: AppColors.warmTeal,
-            isVisible: isVisible,
-            delay: 300,
-          ),
+          ...experiences.asMap().entries.map((entry) {
+            final index = entry.key;
+            final exp = entry.value;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: _ExperienceItem(
+                experience: exp,
+                isVisible: isVisible,
+                delay: 100 + (index * 200),
+              ),
+            );
+          }),
         ],
       ),
     );
@@ -61,20 +57,12 @@ class ExperienceSection extends ConsumerWidget {
 }
 
 class _ExperienceItem extends StatelessWidget {
-  final String company;
-  final String role;
-  final String period;
-  final String description;
-  final Color color;
+  final ExperienceData experience;
   final bool isVisible;
   final int delay;
 
   const _ExperienceItem({
-    required this.company,
-    required this.role,
-    required this.period,
-    required this.description,
-    required this.color,
+    required this.experience,
     required this.isVisible,
     required this.delay,
   });
@@ -92,17 +80,28 @@ class _ExperienceItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 4,
+                      width: 60,
                       height: 60,
                       decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: BorderRadius.circular(2),
-                        boxShadow: [
-                          BoxShadow(
-                            color: color.withValues(alpha: 0.5),
-                            blurRadius: 10,
+                        color: Colors.white.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: experience.color.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(11),
+                        child: AppImage(
+                          path: experience.companyLogo,
+                          fit: BoxFit.cover,
+                          errorWidget: Center(
+                            child: Icon(
+                              Icons.business_rounded,
+                              color: experience.color.withValues(alpha: 0.5),
+                              size: 30,
+                            ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -111,22 +110,58 @@ class _ExperienceItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            company,
+                            experience.company,
                             style: Theme.of(context).textTheme.titleLarge
                                 ?.copyWith(fontSize: isMobile ? 20 : 24),
                           ),
                           Text(
-                            role,
+                            experience.role,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
-                                  color: color,
+                                  color: experience.color,
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 12),
                           Text(
-                            description,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            experience.description,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: AppColors.textSecondary),
+                          ),
+                          const SizedBox(height: 20),
+                          ...experience.achievements.map(
+                            (achievement) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 6.0),
+                                    child: Container(
+                                      width: 6,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                        color: experience.color,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      achievement,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: AppColors.textDim,
+                                            height: 1.5,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -134,7 +169,7 @@ class _ExperienceItem extends StatelessWidget {
                     if (!isMobile) ...[
                       const SizedBox(width: 40),
                       Text(
-                        period,
+                        experience.period,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textDim,
                         ),
@@ -147,7 +182,7 @@ class _ExperienceItem extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      period,
+                      experience.period,
                       style: Theme.of(
                         context,
                       ).textTheme.bodySmall?.copyWith(color: AppColors.textDim),

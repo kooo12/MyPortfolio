@@ -38,8 +38,8 @@ dependencies:
   google_fonts: ^6.2.1
   responsive_framework: ^1.4.0
   flutter_animate: ^4.5.0
-
-  flutter_riverpod: ^2.5.1 
+  flutter_riverpod: ^2.5.1
+  font_awesome_flutter: ^10.7.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:new_portfolio/features/portfolio/presentation/shared/widgets/glass_container.dart';
+import 'package:new_portfolio/features/portfolio/data/repositories/portfolio_repository.dart';
+import 'package:new_portfolio/shared/widgets/glass_container.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class AboutSection extends StatelessWidget {
@@ -12,6 +13,8 @@ class AboutSection extends StatelessWidget {
     final isMobile = size.width < 900;
     final padding = isMobile ? 24.0 : 100.0;
 
+    final aboutData = PortfolioRepository.data.about;
+
     return Container(
       constraints: BoxConstraints(minHeight: size.height),
       width: double.infinity,
@@ -21,7 +24,7 @@ class AboutSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'ABOUT ME',
+            aboutData.title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppColors.accent,
               letterSpacing: 2,
@@ -42,7 +45,7 @@ class AboutSection extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Passionate Flutter developer with a focus on creating premium, user-centric experiences. With over 3 years of professional experience, I have developed a deep understanding of mobile architecture, performance optimization, and clean code principles.',
+                          aboutData.bio1,
                           style: Theme.of(context).textTheme.bodyLarge
                               ?.copyWith(
                                 height: 1.6,
@@ -51,7 +54,7 @@ class AboutSection extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          'I believe that great software is more than just code; it\'s about crafting intuitive interactions and beautiful interfaces that solve real-world problems. My journey in tech is driven by continuous learning and a desire to build tools that empower users.',
+                          aboutData.bio2,
                           style: Theme.of(context).textTheme.bodyLarge
                               ?.copyWith(
                                 height: 1.6,
@@ -62,13 +65,9 @@ class AboutSection extends StatelessWidget {
                         Wrap(
                           spacing: 12,
                           runSpacing: 12,
-                          children: [
-                            _InfoTag(label: 'Based in Mandalay, MM'),
-                            _InfoTag(
-                              label: 'Full-time / Part-time / Freelance',
-                            ),
-                            _InfoTag(label: 'Available for Projects'),
-                          ],
+                          children: aboutData.tags
+                              .map((tag) => _InfoTag(label: tag))
+                              .toList(),
                         ),
                       ],
                     ),
@@ -81,13 +80,17 @@ class AboutSection extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Column(
-                    children: [
-                      _StatCard(number: '3+', label: 'Years Experience'),
-                      const SizedBox(height: 20),
-                      _StatCard(number: '7+', label: 'Projects Completed'),
-                      const SizedBox(height: 20),
-                      _StatCard(number: '5+', label: 'Happy Clients'),
-                    ],
+                    children: aboutData.stats
+                        .map(
+                          (stat) => Padding(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: _StatCard(
+                              number: stat.number,
+                              label: stat.label,
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
                 ),
               ],
@@ -96,13 +99,14 @@ class AboutSection extends StatelessWidget {
 
           if (isMobile)
             Column(
-              children: [
-                _StatCard(number: '3+', label: 'Years Experience'),
-                const SizedBox(height: 20),
-                _StatCard(number: '7+', label: 'Projects Completed'),
-                const SizedBox(height: 20),
-                _StatCard(number: '5+', label: 'Happy Clients'),
-              ],
+              children: aboutData.stats
+                  .map(
+                    (stat) => Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: _StatCard(number: stat.number, label: stat.label),
+                    ),
+                  )
+                  .toList(),
             ),
         ],
       ),

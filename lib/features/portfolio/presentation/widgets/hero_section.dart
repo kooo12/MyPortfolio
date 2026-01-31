@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:new_portfolio/features/portfolio/data/repositories/portfolio_repository.dart';
+import 'package:new_portfolio/shared/widgets/app_image.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class HeroSection extends ConsumerWidget {
@@ -13,6 +15,8 @@ class HeroSection extends ConsumerWidget {
     final isMobile = size.width < 900;
     final padding = isMobile ? 24.0 : 100.0;
     final titleSize = size.width < 600 ? 32.0 : (isMobile ? 50.0 : 80.0);
+
+    final heroData = PortfolioRepository.data.hero;
 
     return Container(
       constraints: BoxConstraints(minHeight: size.height),
@@ -42,7 +46,7 @@ class HeroSection extends ConsumerWidget {
                       shaderCallback: (bounds) =>
                           AppColors.accentGradient.createShader(bounds),
                       child: Text(
-                        'HI, I AM AUNG KO OO',
+                        heroData.title,
                         textAlign: isMobile
                             ? TextAlign.center
                             : TextAlign.start,
@@ -55,7 +59,7 @@ class HeroSection extends ConsumerWidget {
                     ).animate().fadeIn(duration: 800.ms).slideX(begin: -0.2),
                     const SizedBox(height: 20),
                     Text(
-                          'Flutter Developer\nCrafting Premium\nExperiences.',
+                          heroData.subtitle,
                           textAlign: isMobile
                               ? TextAlign.center
                               : TextAlign.start,
@@ -71,7 +75,7 @@ class HeroSection extends ConsumerWidget {
                         .slideY(begin: 0.1),
                     const SizedBox(height: 30),
                     Text(
-                      '3+ Years Experince | Tech Plus Solutions (TPS)',
+                      heroData.description,
                       textAlign: isMobile ? TextAlign.center : TextAlign.start,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
@@ -139,8 +143,8 @@ class _ProfilePhoto extends StatelessWidget {
                   .fadeOut(),
 
               ClipOval(
-                child: Image.asset(
-                  'assets/profile.png',
+                child: AppImage(
+                  path: PortfolioRepository.data.hero.profileImg,
                   width: 320,
                   height: 320,
                   fit: BoxFit.cover,
