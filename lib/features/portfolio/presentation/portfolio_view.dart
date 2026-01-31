@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:new_portfolio/features/portfolio/presentation/providers/scroll_provider.dart';
 import 'package:new_portfolio/features/portfolio/presentation/shared/widgets/animated_background.dart';
 import 'package:new_portfolio/features/portfolio/presentation/shared/widgets/custom_nav_bar.dart';
+import 'package:new_portfolio/features/portfolio/presentation/widgets/about_section.dart';
+import 'package:new_portfolio/features/portfolio/presentation/widgets/experience_section.dart';
 import 'package:new_portfolio/features/portfolio/presentation/widgets/hero_section.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -10,12 +13,27 @@ class PortfolioView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scrollState = ref.watch(scrollProvider);
+    final scrollController = scrollState.controller;
+    final keys = scrollState.sectionKeys;
+
     return Scaffold(
       body: ResponsiveBreakpoints.builder(
         child: Stack(
           children: [
             const AnimatedBackground(),
-            SingleChildScrollView(child: Column(children: [HeroSection()])),
+
+            SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                children: [
+                  HeroSection(key: keys[0]),
+                  AboutSection(key: keys[1]),
+                  ExperienceSection(key: keys[2]),
+                ],
+              ),
+            ),
+
             const CustomNavBar(),
           ],
         ),

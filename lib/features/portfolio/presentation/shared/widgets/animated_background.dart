@@ -12,32 +12,53 @@ class AnimatedBackground extends StatefulWidget {
 class _AnimatedBackgroundState extends State<AnimatedBackground>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  final List<_Particle> _particles = List.generate(20, (index) => _Particle());
+  late List<_Particle> _particles;
+  Size? _lastSize;
 
   @override
   void initState() {
     super.initState();
+    _particles = List.generate(25, (index) => _Particle());
+
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 20),
-    )..repeat();
+      duration: const Duration(seconds: 2),
+    )..addListener(_updateParticles);
+    _controller.repeat();
+  }
+
+  void _updateParticles() {
+    if (_lastSize == null) return;
+    setState(() {
+      for (final particle in _particles) {
+        particle.update(_lastSize!);
+      }
+    });
   }
 
   @override
   void dispose() {
+    _controller.removeListener(_updateParticles);
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final size = Size(constraints.maxWidth, constraints.maxHeight);
+        if (_lastSize != size) {
+          _lastSize = size;
+          for (final particle in _particles) {
+            particle.initPosition(size);
+          }
+        }
+
         return Container(
           decoration: const BoxDecoration(gradient: AppColors.bgGradient),
           child: CustomPaint(
-            painter: _ParticlePainter(_particles, _controller.value),
+            painter: _ParticlePainter(_particles),
             size: Size.infinite,
           ),
         );
@@ -47,41 +68,53 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
 }
 
 class _Particle {
-  double x = Random().nextDouble();
-  double y = Random().nextDouble();
-  double size = Random().nextDouble() * 200 + 100;
-  Color color = [
+  late double x;
+  late double y;
+  late double speedX;
+  late double speedY;
+  final double size = Random().nextDouble() * 200 + 100;
+  final Color color = [
     AppColors.primary.withValues(alpha: 0.1),
     AppColors.accent.withValues(alpha: 0.1),
     AppColors.warmTeal.withValues(alpha: 0.1),
   ][Random().nextInt(3)];
-  double speedX = (Random().nextDouble() - 0.5) * 0.05;
-  double speedY = (Random().nextDouble() - 0.5) * 0.05;
+
+  bool _isInitialized = false;
+
+  void initPosition(Size canvasSize) {
+    if (!_isInitialized) {
+      x = Random().nextDouble() * canvasSize.width;
+      y = Random().nextDouble() * canvasSize.height;
+      speedX = (Random().nextDouble() - 0.5) * 1.5;
+      speedY = (Random().nextDouble() - 0.5) * 1.5;
+      _isInitialized = true;
+    }
+  }
+
+  void update(Size canvasSize) {
+    x += speedX;
+    y += speedY;
+
+    if (x < -size) x = canvasSize.width + size;
+    if (x > canvasSize.width + size) x = -size;
+    if (y < -size) y = canvasSize.height + size;
+    if (y > canvasSize.height + size) y = -size;
+  }
 }
 
 class _ParticlePainter extends CustomPainter {
   final List<_Particle> particles;
-  final double animationValue;
 
-  _ParticlePainter(this.particles, this.animationValue);
+  _ParticlePainter(this.particles);
 
   @override
   void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 50);
+
     for (final particle in particles) {
-      final x =
-          (particle.x + particle.speedX * animationValue * 10) %
-          1.0 *
-          size.width;
-      final y =
-          (particle.y + particle.speedY * animationValue * 10) %
-          1.0 *
-          size.height;
-
-      final paint = Paint()
-        ..color = particle.color
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 50);
-
-      canvas.drawCircle(Offset(x, y), particle.size, paint);
+      paint.color = particle.color;
+      canvas.drawCircle(Offset(particle.x, particle.y), particle.size, paint);
     }
   }
 
