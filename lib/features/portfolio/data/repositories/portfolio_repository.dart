@@ -65,5 +65,178 @@ class PortfolioRepository {
         color: AppColors.warmTeal,
       ),
     ],
+    skills: [
+      SkillData(
+        name: 'Flutter',
+        role: 'Cross-Platform Framework',
+        level: '01',
+        description:
+            'Expert in building high-performance, beautiful mobile applications using Flutter.',
+      ),
+      SkillData(
+        name: 'Dart',
+        role: 'Core Language',
+        level: '02',
+        description:
+            'Deep understanding of Dart language features, async programming, and efficient code practices.',
+      ),
+      SkillData(
+        name: 'Firebase',
+        role: 'Backend as a Service',
+        level: '03',
+        description:
+            'Proficient in using Firestore, Cloud Functions, Auth, and Storage for scalable serverless backends.',
+      ),
+      SkillData(
+        name: 'Clean Arch',
+        role: 'Scalable Design Pattern',
+        level: '04',
+        description:
+            'State Management: BLoC, Riverpod, GetX.\nFocus on testability and separation of concerns.',
+      ),
+      SkillData(
+        name: 'Rest API',
+        role: 'Network Communication',
+        level: '05',
+        description:
+            'Integrating complex RESTful APIs with error handling, caching, and secure token management.',
+      ),
+      SkillData(
+        name: 'Git',
+        role: 'Version Control',
+        level: '06',
+        description:
+            'Comfortable with branching strategies, merge conflicts resolution, and CI/CD workflows.',
+      ),
+    ],
+    projects: [
+      ProjectData(
+        title: 'Sonus Music Player',
+        description:
+            "A music player app with a modern glamorous UI and smooth animations. Features smooth animations and offline support. It supports mp3, wav, m4a, and other audio formats.",
+        image:
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/SONUSMusicPlayer/sonus_logo.png?updatedAt=1770569033141',
+        color: AppColors.primary,
+        techStack: [
+          "Flutter",
+          "Firebase",
+          "GetX",
+          "SQLite",
+          "Audio Engine",
+          "Animations",
+          "Firebase FCM",
+          "Firebase Firestore",
+        ],
+        category: 'Mobile',
+        responsibilities: [
+          "Developed complete UI and state management for mobile app.",
+          "Integrated Firebase Firestore Database for fcm tokens.",
+          "Implemented admin access for push notifications, manage users and fcm tokens",
+          "Implemented offline support for audio playback",
+          "Implemented rich features - Sleep timer, Playlist, Shuffle, Repeat, Smart Recommendation and more",
+          "Implemented two language support - English and Myanmar",
+          "Implemented theme modes",
+        ],
+        coreFeatures: [
+          "Offline support for audio playback",
+          "Audio player with smooth animations",
+          "Rich features - Sleep timer, Playlist, Shuffle, Repeat, Smart Recommendation and more",
+          "Two language support - English and Myanmar",
+          "Many theme modes",
+          "Admin access for push notifications, manage users and fcm tokens",
+        ],
+
+        appImages: [
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/SONUSMusicPlayer/sonus_logo.png?updatedAt=1770569033141',
+        ],
+        playStoreUrl:
+            'https://play.google.com/store/apps/details?id=com.ako.sonus',
+        githubUrl: 'https://github.com/kooo12/sonus',
+      ),
+      ProjectData(
+        title: 'Htun Pauk Fuel Energy & Logistics Management System',
+        description:
+            "A comprehensive fuel management system for logistics companies, featuring real-time tracking, automated reporting, and driver management. Built with Flutter for cross-platform support.A full-stack logistics and fuel distribution platform for businesses and transportation fleets",
+        image:
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/HtunPauk/htunpauk_store_icon-2.png',
+        color: AppColors.primary,
+        techStack: [
+          "Flutter",
+          "GetX",
+          "Provider",
+          "REST APIs",
+          "Firebase",
+          "Firebase FCM",
+          "Socket.io",
+          "Map Box",
+        ],
+        category: 'Client Project',
+        responsibilities: [
+          "Architected and developed full Flutter mobile app UI and logic.",
+          "Integrated custom backend services, socket connections, and FCM.",
+          "Implemented complex workflows including location tracking, order management, and notifications.",
+        ],
+        coreFeatures: [
+          "Multi-auth login: Apple, Google, phone, username",
+          "Background location tracking for drivers",
+          "Real-time map with driver & station tracking",
+          "Socket-based chat: voice, text, images, videos and files",
+          "Push notifications with FCM tokens",
+          "Multi-order workflows & driver assignment",
+          "Admin dashboard for order management, driver management, user management, and others",
+          "Invoice generation (save/share PDF)",
+          "Force update system & version control UI",
+          "Digital wallet for users & drivers, transaction history",
+          "Admin reporting dashboards",
+          "Dual-language UI (Myanmar, English)",
+          "Dark & light modes + user-role themes",
+        ],
+        appImages: [
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/HtunPauk/htunpauk_store_icon-2.png',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/HtunPauk/Screenshot%202025-11-27%20at%202.50.55%E2%80%AFPM.png?updatedAt=1770569033146',
+        ],
+        playStoreUrl:
+            "https://play.google.com/store/apps/details?id=com.tps.htunpauk&hl=en",
+        appStoreUrl: 'https://apps.apple.com/us/app/htunpauk/id6742842928',
+        webUrl: 'https://htunpauk.com',
+      ),
+      ProjectData(
+        title: "MeexU Dating App",
+        description:
+            "A location-aware matchmaking and chat application designed for high-engagement social interactions.",
+        image:
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu_logo.png',
+        color: AppColors.accent,
+        techStack: [
+          "Flutter",
+          "GetX",
+          "Socket.io",
+          "REST APIs",
+          "Firebase FCM",
+        ],
+        category: 'Client Project',
+        responsibilities: [
+          "Developed complete UI and state management for mobile app.",
+          "Integrated custom backend APIs and real-time messaging.",
+          "Implemented user matching algorithms and chat features.",
+        ],
+        coreFeatures: [
+          "Apple, Google and email login",
+          "Location-based user discovery (nearby / distance calculation)",
+          "Advanced matching logic (interest-based feed and liking system)",
+          "Chat with voice, text, image messaging",
+          "Match celebration animation & UI",
+          "Like, match, and profile sections",
+          "Block/unblock system",
+          "Google AdMob monetization (Banner, Native, Reward Ads)",
+        ],
+        appImages: [
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu1.png?updatedAt=1770569033119',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu.png?updatedAt=1770569033131',
+        ],
+        playStoreUrl:
+            "https://play.google.com/store/apps/details?id=com.tps.meexu&hl=en",
+      ),
+    ],
   );
 }

@@ -57,14 +57,64 @@ class ExperienceData {
   });
 }
 
+class SkillData {
+  final String name;
+  final String role;
+  final String level;
+  final String description;
+
+  const SkillData({
+    required this.name,
+    required this.role,
+    required this.level,
+    required this.description,
+  });
+}
+
+class ProjectData {
+  final String title;
+  final String description;
+  final String image;
+  final Color color;
+  final List<String> techStack;
+  final List<String> responsibilities;
+  final List<String> coreFeatures;
+  final String? playStoreUrl;
+  final String? appStoreUrl;
+  final String? githubUrl;
+  final String? webUrl;
+  final String category;
+  final List<String> appImages;
+
+  const ProjectData({
+    required this.title,
+    required this.description,
+    required this.image,
+    required this.color,
+    required this.techStack,
+    required this.responsibilities,
+    required this.coreFeatures,
+    required this.category,
+    required this.appImages,
+    this.playStoreUrl,
+    this.appStoreUrl,
+    this.githubUrl,
+    this.webUrl,
+  });
+}
+
 class PortfolioData {
   final HeroData hero;
   final AboutData about;
   final List<ExperienceData> experiences;
+  final List<SkillData> skills;
+  final List<ProjectData> projects;
 
   const PortfolioData({
     required this.hero,
     required this.about,
     required this.experiences,
+    required this.skills,
+    required this.projects,
   });
 }
