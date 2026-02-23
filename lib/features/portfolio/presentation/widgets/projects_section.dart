@@ -46,10 +46,10 @@ class ProjectsSection extends StatelessWidget {
 
               if (constraints.maxWidth < 700) {
                 crossAxisCount = 1;
-                childAspectRatio = 1.4;
-              } else if (constraints.maxWidth < 1100) {
+                childAspectRatio = 1.1;
+              } else if (constraints.maxWidth < 1200) {
                 crossAxisCount = 2;
-                childAspectRatio = 0.9;
+                childAspectRatio = 0.85;
               }
 
               return GridView.builder(
@@ -64,7 +64,10 @@ class ProjectsSection extends StatelessWidget {
                 ),
                 itemBuilder: (context, index) {
                   final project = projects[index];
-                  return ProjectCard(project: project)
+                  return ProjectCard(
+                        project: project,
+                        crossAxisCount: crossAxisCount,
+                      )
                       .animate()
                       .fadeIn(delay: (index * 200).ms)
                       .scale(begin: const Offset(0.9, 0.9));
@@ -80,8 +83,13 @@ class ProjectsSection extends StatelessWidget {
 
 class ProjectCard extends StatefulWidget {
   final ProjectData project;
+  final int crossAxisCount;
 
-  const ProjectCard({super.key, required this.project});
+  const ProjectCard({
+    super.key,
+    required this.project,
+    required this.crossAxisCount,
+  });
 
   @override
   State<ProjectCard> createState() => _ProjectCardState();
@@ -96,7 +104,7 @@ class _ProjectCardState extends State<ProjectCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isDesktop = size.width >= 1100;
+    final isDesktop = size.width >= 1200;
     final isMobile = size.width < 700;
 
     return MouseTiltWrapper(
@@ -211,7 +219,7 @@ class _ProjectCardState extends State<ProjectCard> {
                   ),
                 ),
                 Expanded(
-                  flex: 6,
+                  flex: isMobile ? 5 : 6,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -232,7 +240,17 @@ class _ProjectCardState extends State<ProjectCard> {
                         const SizedBox(height: 8),
                         Text(
                           widget.project.description,
-                          maxLines: isDesktop ? 3 : 2,
+                          maxLines: isDesktop
+                              ? widget.crossAxisCount == 3
+                                    ? 2
+                                    : widget.crossAxisCount == 2
+                                    ? 4
+                                    : widget.crossAxisCount == 1
+                                    ? 4
+                                    : 3
+                              : isMobile
+                              ? 4
+                              : 4,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: AppColors.textSecondary,
@@ -276,7 +294,18 @@ class _ProjectCardState extends State<ProjectCard> {
                           spacing: 8,
                           runSpacing: 8,
                           children: widget.project.techStack
-                              .take(isMobile ? 5 : 5)
+                              .take(
+                                5,
+                                // isMobile
+                                //     ? 5
+                                //     : widget.crossAxisCount == 3
+                                //     ? 5
+                                //     : widget.crossAxisCount == 2
+                                //     ? 4
+                                //     : widget.crossAxisCount == 1
+                                //     ? 4
+                                //     : 4,
+                              )
                               .map((tech) {
                                 return Container(
                                   padding: const EdgeInsets.symmetric(

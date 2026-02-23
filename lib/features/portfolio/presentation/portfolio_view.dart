@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:new_portfolio/features/portfolio/presentation/providers/scroll_provider.dart';
+import 'package:new_portfolio/features/portfolio/presentation/widgets/contact_section.dart';
 import 'package:new_portfolio/features/portfolio/presentation/widgets/projects_section.dart';
 import 'package:new_portfolio/features/portfolio/presentation/widgets/skills_section.dart';
 import 'package:new_portfolio/shared/widgets/animated_background.dart';
@@ -34,6 +35,7 @@ class PortfolioView extends ConsumerWidget {
                   ExperienceSection(key: keys[2]),
                   SkillsSection(key: keys[3]),
                   ProjectsSection(key: keys[4]),
+                  ContactSection(key: keys[5]),
                 ],
               ),
             ),

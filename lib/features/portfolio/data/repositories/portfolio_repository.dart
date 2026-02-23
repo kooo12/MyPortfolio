@@ -1,3 +1,5 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../domain/models/portfolio_models.dart';
 import '../../../../core/theme/app_colors.dart';
 
@@ -238,5 +240,28 @@ class PortfolioRepository {
             "https://play.google.com/store/apps/details?id=com.tps.meexu&hl=en",
       ),
     ],
+    contact: ContactData(
+      email: 'agkooo.ako36@gmail.com',
+      phone: '+95 9 969 687 330',
+      location: 'Mandalay, Myanmar',
+      socials: [
+        SocialData(
+          icon: FontAwesomeIcons.github,
+          url: 'https://github.com/kooo12',
+        ),
+        SocialData(
+          icon: FontAwesomeIcons.linkedin,
+          url: 'https://www.linkedin.com/in/aung-ko-oo-042342242/',
+        ),
+        SocialData(
+          icon: FontAwesomeIcons.facebook,
+          url: 'https://facebook.com/kooo1210',
+        ),
+        SocialData(
+          icon: FontAwesomeIcons.telegram,
+          url: 'https://t.me/kooo2109',
+        ),
+      ],
+    ),
   );
 }

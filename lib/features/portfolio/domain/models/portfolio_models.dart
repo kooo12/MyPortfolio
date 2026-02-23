@@ -103,12 +103,34 @@ class ProjectData {
   });
 }
 
+class ContactData {
+  final String email;
+  final String phone;
+  final String location;
+  final List<SocialData> socials;
+
+  const ContactData({
+    required this.email,
+    required this.phone,
+    required this.location,
+    required this.socials,
+  });
+}
+
+class SocialData {
+  final IconData icon;
+  final String url;
+
+  const SocialData({required this.icon, required this.url});
+}
+
 class PortfolioData {
   final HeroData hero;
   final AboutData about;
   final List<ExperienceData> experiences;
   final List<SkillData> skills;
   final List<ProjectData> projects;
+  final ContactData contact;
 
   const PortfolioData({
     required this.hero,
@@ -116,5 +138,6 @@ class PortfolioData {
     required this.experiences,
     required this.skills,
     required this.projects,
+    required this.contact,
   });
 }
