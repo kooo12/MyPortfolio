@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -17,8 +18,13 @@
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Aung Ko Oo — Portfolio">
+
+  <!-- PWA / theming -->
+  <meta name="theme-color" content="#161617">
+  <meta name="background-color" content="#161617">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -27,12 +33,111 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
-  <title>new_portfolio</title>
+  <title>Aung Ko Oo</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Social preview -->
+  <meta property="og:title" content="Aung Ko Oo">
+  <meta property="og:description" content="Portfolio">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: #161617;
+      color: #e5e5e7;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    #preload {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #161617 0%, #0f0f10 100%);
+      z-index: 9999;
+    }
+
+    #preload-inner {
+      display: grid;
+      gap: 14px;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    #preload-title {
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(229, 229, 231, 0.8);
+    }
+
+    #spinner {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 3px solid rgba(229, 229, 231, 0.18);
+      border-top-color: rgba(212, 175, 55, 0.95);
+      animation: spin 900ms linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #spinner {
+        animation: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <div id="preload" role="status" aria-live="polite" aria-label="Loading">
+    <div id="preload-inner">
+      <div id="spinner" aria-hidden="true"></div>
+      <div id="preload-title">Loading portfolio</div>
+    </div>
+  </div>
+
+  <noscript>
+    <div style="padding:16px;color:#e5e5e7;background:#161617">
+      This site requires JavaScript to run.
+    </div>
+  </noscript>
+
+  <script>
+    (function () {
+      function hidePreload() {
+        const el = document.getElementById('preload');
+        if (!el) return;
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 220ms ease';
+        window.setTimeout(() => el.remove(), 260);
+        document.body.style.overflow = '';
+      }
+
+      // Flutter emits this event after first frame is rendered.
+      window.addEventListener('flutter-first-frame', hidePreload, { once: true });
+
+      // Fallback in case the event is missed.
+      window.setTimeout(hidePreload, 12000);
+    })();
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
+
 </html>

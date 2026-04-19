@@ -16,62 +16,64 @@ class ProjectsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isMobile = size.width < 600;
-
     final projects = PortfolioRepository.data.projects;
 
-    return Container(
-      constraints: BoxConstraints(minHeight: size.height),
-      width: double.infinity,
+    return SliverPadding(
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 24 : 100,
         vertical: 50,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'FEATURED PROJECTS',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.accent,
-              letterSpacing: 2,
-              fontWeight: FontWeight.bold,
+      sliver: SliverMainAxisGroup(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'FEATURED PROJECTS',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: AppColors.accent,
+                    letterSpacing: 2,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 50),
+              ],
             ),
           ),
-          const SizedBox(height: 50),
-          LayoutBuilder(
+          SliverLayoutBuilder(
             builder: (context, constraints) {
               int crossAxisCount = 3;
               double childAspectRatio = 0.85;
 
-              if (constraints.maxWidth < 700) {
+              if (constraints.crossAxisExtent < 700) {
                 crossAxisCount = 1;
                 childAspectRatio = 1.1;
-              } else if (constraints.maxWidth < 1200) {
+              } else if (constraints.crossAxisExtent < 1200) {
                 crossAxisCount = 2;
                 childAspectRatio = 0.85;
               }
 
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: projects.length,
+              return SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 30,
                   mainAxisSpacing: 30,
                   childAspectRatio: childAspectRatio,
                 ),
-                itemBuilder: (context, index) {
-                  final project = projects[index];
-                  return ProjectCard(
-                        project: project,
-                        crossAxisCount: crossAxisCount,
-                      )
-                      .animate()
-                      .fadeIn(delay: (index * 200).ms)
-                      .scale(begin: const Offset(0.9, 0.9));
-                },
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final project = projects[index];
+                    return ProjectCard(
+                          project: project,
+                          crossAxisCount: crossAxisCount,
+                        )
+                        .animate()
+                        .fadeIn(delay: (index * 100).ms)
+                        .scale(begin: const Offset(0.9, 0.9));
+                  },
+                  childCount: projects.length,
+                ),
               );
             },
           ),
@@ -106,11 +108,10 @@ class _ProjectCardState extends State<ProjectCard> {
     final size = MediaQuery.of(context).size;
     final isDesktop = size.width >= 1200;
     final isMobile = size.width < 700;
+    final isHoverEnabled = !isMobile;
+    final isHovered = isHoverEnabled && _isHovered;
 
-    return MouseTiltWrapper(
-      onEnter: _onEnter,
-      onExit: _onExit,
-      child: GestureDetector(
+    final card = GestureDetector(
         onTap: () {
           context.push('/project-details', extra: widget.project);
         },
@@ -118,7 +119,7 @@ class _ProjectCardState extends State<ProjectCard> {
           duration: const Duration(milliseconds: 300),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            boxShadow: _isHovered
+            boxShadow: isHovered
                 ? [
                     BoxShadow(
                       color: widget.project.color.withValues(alpha: 0.3),
@@ -128,10 +129,11 @@ class _ProjectCardState extends State<ProjectCard> {
                   ]
                 : [],
           ),
-          child: GlassContainer(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+      child: RepaintBoundary(
+        child: GlassContainer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
                 Expanded(
                   flex: isMobile ? 4 : 5,
                   child: Container(
@@ -153,7 +155,7 @@ class _ProjectCardState extends State<ProjectCard> {
                       children: [
                         Positioned.fill(
                           child: AnimatedScale(
-                            scale: _isHovered ? 1.1 : 1.0,
+                            scale: isHovered ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 300),
                             child: Hero(
                               tag: 'project_image_${widget.project.title}_0',
@@ -202,7 +204,7 @@ class _ProjectCardState extends State<ProjectCard> {
                             ),
                           ),
                         ),
-                        if (_isHovered)
+                        if (isHovered)
                           const Align(
                             alignment: Alignment.topRight,
                             child: Padding(
@@ -232,7 +234,7 @@ class _ProjectCardState extends State<ProjectCard> {
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: _isHovered
+                                color: isHovered
                                     ? AppColors.accent
                                     : AppColors.textPrimary,
                               ),
@@ -367,6 +369,11 @@ class _ProjectCardState extends State<ProjectCard> {
                                   const _ProjectLink(
                                     icon: FontAwesomeIcons.globe,
                                   ),
+                                const SizedBox(width: 8),
+                                if (widget.project.liveDemo != null)
+                                  const _ProjectLink(
+                                    icon: FontAwesomeIcons.mobile,
+                                  ),
                               ],
                             ),
                           ],
@@ -380,6 +387,14 @@ class _ProjectCardState extends State<ProjectCard> {
           ),
         ),
       ),
+    );
+
+    if (!isHoverEnabled) return card;
+
+    return MouseTiltWrapper(
+      onEnter: _onEnter,
+      onExit: _onExit,
+      child: card,
     );
   }
 }

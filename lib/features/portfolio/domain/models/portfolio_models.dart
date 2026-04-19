@@ -45,6 +45,7 @@ class ExperienceData {
   final String companyLogo;
   final List<String> achievements;
   final Color color;
+  final String? website;
 
   const ExperienceData({
     required this.company,
@@ -54,6 +55,7 @@ class ExperienceData {
     required this.companyLogo,
     required this.achievements,
     required this.color,
+    this.website,
   });
 }
 
@@ -83,6 +85,7 @@ class ProjectData {
   final String? appStoreUrl;
   final String? githubUrl;
   final String? webUrl;
+  final String? liveDemo;
   final String category;
   final List<String> appImages;
 
@@ -100,6 +103,7 @@ class ProjectData {
     this.appStoreUrl,
     this.githubUrl,
     this.webUrl,
+    this.liveDemo,
   });
 }
 

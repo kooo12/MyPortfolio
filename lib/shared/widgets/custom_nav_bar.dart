@@ -21,96 +21,100 @@ class CustomNavBar extends ConsumerWidget {
       top: 20,
       left: 0,
       right: 0,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 50),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Opacity(
-                opacity: brandingOpacity,
-                child: GlassContainer(
-                  borderRadius: 30,
+      child: RepaintBoundary(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 50),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (brandingOpacity > 0.01)
+                Flexible(
+                  child: AnimatedOpacity(
+                    opacity: brandingOpacity,
+                    duration: const Duration(milliseconds: 100),
+                    child: GlassContainer(
+                      borderRadius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                        child: Text(
+                          'AUNG KO OO',
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: AppColors.primary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+              const SizedBox(width: 20),
+
+              if (!isMobile)
+                GlassContainer(
+                  borderRadius: 40,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                    child: Text(
-                      'AUNG KO OO',
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppColors.primary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _NavItem(
+                          label: 'Home',
+                          isSelected: activeIndex == 0,
+                          onTap: () => ref
+                              .read(scrollProvider.notifier)
+                              .scrollToSection(0),
+                        ),
+                        _NavItem(
+                          label: 'About',
+                          isSelected: activeIndex == 1,
+                          onTap: () => ref
+                              .read(scrollProvider.notifier)
+                              .scrollToSection(1),
+                        ),
+                        _NavItem(
+                          label: 'Experience',
+                          isSelected: activeIndex == 2,
+                          onTap: () => ref
+                              .read(scrollProvider.notifier)
+                              .scrollToSection(2),
+                        ),
+                        _NavItem(
+                          label: 'Skills',
+                          isSelected: activeIndex == 3,
+                          onTap: () => ref
+                              .read(scrollProvider.notifier)
+                              .scrollToSection(3),
+                        ),
+                        _NavItem(
+                          label: 'Projects',
+                          isSelected: activeIndex == 4,
+                          onTap: () => ref
+                              .read(scrollProvider.notifier)
+                              .scrollToSection(4),
+                        ),
+                        _NavItem(
+                          label: 'Contact',
+                          isSelected: activeIndex == 5,
+                          onTap: () => ref
+                              .read(scrollProvider.notifier)
+                              .scrollToSection(5),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-            ),
-
-            const SizedBox(width: 20),
-
-            if (!isMobile)
-              GlassContainer(
-                borderRadius: 40,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _NavItem(
-                        label: 'Home',
-                        isSelected: activeIndex == 0,
-                        onTap: () => ref
-                            .read(scrollProvider.notifier)
-                            .scrollToSection(0),
-                      ),
-                      _NavItem(
-                        label: 'About',
-                        isSelected: activeIndex == 1,
-                        onTap: () => ref
-                            .read(scrollProvider.notifier)
-                            .scrollToSection(1),
-                      ),
-                      _NavItem(
-                        label: 'Experience',
-                        isSelected: activeIndex == 2,
-                        onTap: () => ref
-                            .read(scrollProvider.notifier)
-                            .scrollToSection(2),
-                      ),
-                      _NavItem(
-                        label: 'Skills',
-                        isSelected: activeIndex == 3,
-                        onTap: () => ref
-                            .read(scrollProvider.notifier)
-                            .scrollToSection(3),
-                      ),
-                      _NavItem(
-                        label: 'Projects',
-                        isSelected: activeIndex == 4,
-                        onTap: () => ref
-                            .read(scrollProvider.notifier)
-                            .scrollToSection(4),
-                      ),
-                      _NavItem(
-                        label: 'Contact',
-                        isSelected: activeIndex == 5,
-                        onTap: () => ref
-                            .read(scrollProvider.notifier)
-                            .scrollToSection(5),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

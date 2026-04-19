@@ -29,11 +29,9 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
 
   void _updateParticles() {
     if (_lastSize == null) return;
-    setState(() {
-      for (final particle in _particles) {
-        particle.update(_lastSize!);
-      }
-    });
+    for (final particle in _particles) {
+      particle.update(_lastSize!);
+    }
   }
 
   @override
@@ -57,9 +55,11 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
 
         return Container(
           decoration: const BoxDecoration(gradient: AppColors.bgGradient),
-          child: CustomPaint(
-            painter: _ParticlePainter(_particles),
-            size: Size.infinite,
+          child: RepaintBoundary(
+            child: CustomPaint(
+              painter: _ParticlePainter(_particles, _controller),
+              size: Size.infinite,
+            ),
           ),
         );
       },
@@ -104,20 +104,20 @@ class _Particle {
 
 class _ParticlePainter extends CustomPainter {
   final List<_Particle> particles;
+  final Paint _paint = Paint()
+    ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 50);
 
-  _ParticlePainter(this.particles);
+  _ParticlePainter(this.particles, Listenable repaint)
+    : super(repaint: repaint);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 50);
-
     for (final particle in particles) {
-      paint.color = particle.color;
-      canvas.drawCircle(Offset(particle.x, particle.y), particle.size, paint);
+      _paint.color = particle.color;
+      canvas.drawCircle(Offset(particle.x, particle.y), particle.size, _paint);
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

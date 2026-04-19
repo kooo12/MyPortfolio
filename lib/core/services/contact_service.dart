@@ -49,12 +49,12 @@ class ContactService {
             errorMessage = errorBody['error'] ?? errorMessage;
           }
         } catch (e) {
-          return {'success': false, 'message': errorMessage};
+          return {'error': false, 'message': errorMessage};
         }
-        return {'success': false, 'message': errorMessage};
+        return {'error': false, 'message': errorMessage};
       }
     } catch (e) {
-      return {'success': false, 'message': 'Network error: ${e.toString()}'};
+      return {'error': false, 'message': 'Network error: ${e.toString()}'};
     }
   }
 }

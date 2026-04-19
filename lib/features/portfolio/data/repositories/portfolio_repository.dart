@@ -18,7 +18,7 @@ class PortfolioRepository {
       bio2:
           'I believe that great software is more than just code; it\'s about crafting intuitive interactions and beautiful interfaces that solve real-world problems. My journey in tech is driven by continuous learning and a desire to build tools that empower users.',
       tags: [
-        'Based in Yangon, MM',
+        'Based in Mandalay, MM',
         'Full-time / Freelance',
         'Available for Projects',
       ],
@@ -33,6 +33,7 @@ class PortfolioRepository {
         company: 'Tech Plus Solutions (TPS)',
         role: 'Mid-Senior Flutter Developer',
         period: '2022 - Present',
+        website: 'https://techplussolution.com/',
         description:
             'Driving high-performance mobile solutions. Specialized in complex architectural patterns and performance profiling.',
         companyLogo:
@@ -113,27 +114,28 @@ class PortfolioRepository {
     ],
     projects: [
       ProjectData(
-        title: 'Sonus Music Player',
+        title: 'Velo Music Player',
         description:
             "A music player app with a modern glamorous UI and smooth animations. Features smooth animations and offline support. It supports mp3, wav, m4a, and other audio formats.",
         image:
-            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/SONUSMusicPlayer/sonus_logo.png?updatedAt=1770569033141',
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/app_icon.png',
         color: AppColors.primary,
         techStack: [
           "Flutter",
           "Firebase",
+          "Firestore",
+          "REST APIs",
+          "Hosting",
           "GetX",
           "SQLite",
           "Audio Engine",
           "Animations",
-          "Firebase FCM",
-          "Firebase Firestore",
         ],
         category: 'Mobile',
         responsibilities: [
           "Developed complete UI and state management for mobile app.",
-          "Integrated Firebase Firestore Database for fcm tokens.",
-          "Implemented admin access for push notifications, manage users and fcm tokens",
+          "Integrated Firebase Firestore Database for fcm tokens and others.",
+          "Implemented admin access for push notifications, manage users, fcm tokens and other features.",
           "Implemented offline support for audio playback",
           "Implemented rich features - Sleep timer, Playlist, Shuffle, Repeat, Smart Recommendation and more",
           "Implemented two language support - English and Myanmar",
@@ -149,11 +151,13 @@ class PortfolioRepository {
         ],
 
         appImages: [
-          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/SONUSMusicPlayer/sonus_logo.png?updatedAt=1770569033141',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/velo_promotional_image.png',
         ],
         playStoreUrl:
-            'https://play.google.com/store/apps/details?id=com.ako.sonus',
-        githubUrl: 'https://github.com/kooo12/sonus',
+            'https://play.google.com/store/apps/details?id=com.ako.velo',
+        githubUrl: 'https://github.com/kooo12/velo_music',
+        webUrl: 'https://velo-music.web.app',
+        liveDemo: 'https://velo-live-demo.web.app',
       ),
       ProjectData(
         title: 'Htun Pauk Fuel Energy & Logistics Management System',
@@ -168,7 +172,7 @@ class PortfolioRepository {
           "Provider",
           "REST APIs",
           "Firebase",
-          "Firebase FCM",
+          "Firebase",
           "Socket.io",
           "Map Box",
         ],
@@ -209,13 +213,7 @@ class PortfolioRepository {
         image:
             'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu_logo.png',
         color: AppColors.accent,
-        techStack: [
-          "Flutter",
-          "GetX",
-          "Socket.io",
-          "REST APIs",
-          "Firebase FCM",
-        ],
+        techStack: ["Flutter", "GetX", "Socket.io", "REST APIs", "Firebase"],
         category: 'Client Project',
         responsibilities: [
           "Developed complete UI and state management for mobile app.",

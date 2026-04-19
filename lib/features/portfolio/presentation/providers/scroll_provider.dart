@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final scrollProvider = StateNotifierProvider<ScrollNotifier, ScrollState>((
@@ -61,12 +62,27 @@ class ScrollNotifier extends StateNotifier<ScrollState> {
     state.sectionKeys.forEach((index, key) {
       final context = key.currentContext;
       if (context != null) {
-        final renderObject = context.findRenderObject() as RenderBox;
-        final position = renderObject.localToGlobal(Offset.zero);
-        final distance = position.dy.abs();
-        if (distance < minDistance) {
-          minDistance = distance;
-          newIndex = index;
+        final renderObject = context.findRenderObject();
+        if (renderObject != null) {
+          double distance = 0;
+          if (renderObject is RenderBox) {
+            distance = renderObject.localToGlobal(Offset.zero).dy.abs();
+          } else if (renderObject is RenderSliver) {
+            // final scrollable = Scrollable.of(context);
+            // if (scrollable != null) {
+            final viewport = context
+                .findAncestorRenderObjectOfType<RenderViewportBase>();
+            if (viewport != null) {
+              final offset = viewport.getOffsetToReveal(renderObject, 0.0);
+              distance = (offset.offset - state.controller.offset).abs();
+            }
+            // }
+          }
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            newIndex = index;
+          }
         }
       }
     });

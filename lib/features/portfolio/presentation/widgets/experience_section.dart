@@ -5,6 +5,7 @@ import 'package:new_portfolio/features/portfolio/data/repositories/portfolio_rep
 import 'package:new_portfolio/features/portfolio/domain/models/portfolio_models.dart';
 import 'package:new_portfolio/shared/widgets/app_image.dart';
 import 'package:new_portfolio/shared/widgets/glass_container.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../providers/scroll_provider.dart';
 
@@ -13,10 +14,11 @@ class ExperienceSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scrollOffset = ref.watch(scrollProvider).scrollOffset;
+    final scrollState = ref.watch(scrollProvider);
     final size = MediaQuery.of(context).size;
 
-    final isVisible = scrollOffset > size.height * 0.5;
+    final isVisible =
+        scrollState.scrollOffset > 100 || scrollState.activeIndex >= 2;
     final padding = size.width < 600 ? 24.0 : 100.0;
 
     final experiences = PortfolioRepository.data.experiences;
@@ -91,14 +93,21 @@ class _ExperienceItem extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(11),
-                        child: AppImage(
-                          path: experience.companyLogo,
-                          fit: BoxFit.cover,
-                          errorWidget: Center(
-                            child: Icon(
-                              Icons.business_rounded,
-                              color: experience.color.withValues(alpha: 0.5),
-                              size: 30,
+                        child: GestureDetector(
+                          onTap: experience.website != null
+                              ? () => launchUrl(
+                                  Uri.parse(experience.website ?? ''),
+                                )
+                              : null,
+                          child: AppImage(
+                            path: experience.companyLogo,
+                            fit: BoxFit.cover,
+                            errorWidget: Center(
+                              child: Icon(
+                                Icons.business_rounded,
+                                color: experience.color.withValues(alpha: 0.5),
+                                size: 30,
+                              ),
                             ),
                           ),
                         ),
@@ -109,10 +118,17 @@ class _ExperienceItem extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            experience.company,
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(fontSize: isMobile ? 20 : 24),
+                          GestureDetector(
+                            onTap: experience.website != null
+                                ? () => launchUrl(
+                                    Uri.parse(experience.website ?? ''),
+                                  )
+                                : null,
+                            child: Text(
+                              experience.company,
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(fontSize: isMobile ? 20 : 24),
+                            ),
                           ),
                           Text(
                             experience.role,

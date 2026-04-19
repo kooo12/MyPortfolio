@@ -273,12 +273,19 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             url: widget.project.githubUrl!,
             color: AppColors.textPrimary,
           ),
-        if (widget.project.webUrl != null)
+        if (widget.project.liveDemo != null)
           _ActionButton(
             label: 'Live Demo',
+            icon: FontAwesomeIcons.mobile,
+            url: widget.project.liveDemo!,
+            color: AppColors.accent,
+          ),
+        if (widget.project.webUrl != null)
+          _ActionButton(
+            label: 'Website',
             icon: FontAwesomeIcons.globe,
             url: widget.project.webUrl!,
-            color: AppColors.accent,
+            color: AppColors.primary,
           ),
         if (widget.project.playStoreUrl != null)
           _ActionButton(

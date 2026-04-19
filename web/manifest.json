@@ -1,11 +1,11 @@
 {
-    "name": "new_portfolio",
-    "short_name": "new_portfolio",
+    "name": "Aung Ko Oo",
+    "short_name": "Aung Ko Oo",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#161617",
+    "theme_color": "#161617",
+    "description": "Aung Ko Oo — Portfolio",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
