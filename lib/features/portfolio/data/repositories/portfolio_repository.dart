@@ -18,13 +18,7 @@ class PortfolioRepository {
           'My approach to mobile development roots deeply in architectural precision. I believe that a fluid user experience is directly tied to the robustness of the underlying codebase. Leveraging advanced Flutter capabilities, I architect scalable solutions that balance immediate feature delivery with long-term maintainability.',
       bio2:
           'From complex state management to custom render objects, my focus remains on creating premium, jank-free interfaces that feel native to every platform.',
-      tags: [
-        'Flutter',
-        'Dart',
-        'REST API',
-        'Firebase',
-        'Clean Architecture',
-      ],
+      tags: ['Flutter', 'Dart', 'REST API', 'Firebase', 'Clean Architecture'],
       stats: [
         StatData(number: '3+', label: 'Years Experience'),
         StatData(number: '7+', label: 'Projects Completed'),
@@ -215,7 +209,8 @@ class PortfolioRepository {
         description:
             "A location-aware matchmaking and chat application designed for high-engagement social interactions.",
         image:
-            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu_logo.png',
+            // 'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu_logo.png',
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu1.png?updatedAt=1770569033119',
         color: AppColors.accent,
         techStack: ["Flutter", "GetX", "Socket.io", "REST APIs", "Firebase"],
         category: 'Client Project',

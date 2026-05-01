@@ -39,7 +39,12 @@ class ContactService {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: jsonEncode({'name': name, 'email': email, 'message': message,'subject':subject}),
+        body: jsonEncode({
+          'name': name,
+          'email': email,
+          'message': message,
+          'about': subject,
+        }),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
