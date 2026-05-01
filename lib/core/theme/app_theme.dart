@@ -14,17 +14,35 @@ class AppTheme {
       surface: AppColors.surface,
       error: Colors.redAccent,
     ),
-    textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).copyWith(
-      displayLarge: GoogleFonts.outfit(
+    textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme).copyWith(
+      displayLarge: GoogleFonts.spaceGrotesk(
         color: AppColors.textPrimary,
-        fontWeight: FontWeight.w900,
-        letterSpacing: -1.5,
+        fontWeight: FontWeight.w700,
+        fontSize: 72,
+        height: 1.1,
+        letterSpacing: -2.88,
       ),
-      displayMedium: GoogleFonts.outfit(
+      displayMedium: GoogleFonts.spaceGrotesk(
         color: AppColors.textPrimary,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w600,
+        fontSize: 48,
+        height: 1.2,
+        letterSpacing: -0.96,
       ),
-      titleLarge: GoogleFonts.outfit(
+      headlineLarge: GoogleFonts.spaceGrotesk(
+        color: AppColors.textPrimary,
+        fontWeight: FontWeight.w600,
+        fontSize: 48,
+        height: 1.2,
+        letterSpacing: -0.96,
+      ),
+      headlineMedium: GoogleFonts.spaceGrotesk(
+        color: AppColors.textPrimary,
+        fontWeight: FontWeight.w600,
+        fontSize: 32,
+        height: 1.3,
+      ),
+      titleLarge: GoogleFonts.spaceGrotesk(
         color: AppColors.textPrimary,
         fontWeight: FontWeight.bold,
       ),
@@ -36,16 +54,29 @@ class AppTheme {
       bodyMedium: GoogleFonts.inter(
         color: AppColors.textSecondary,
         fontSize: 16,
+        height: 1.6,
+      ),
+      bodySmall: GoogleFonts.inter(
+        color: AppColors.textDim,
+        fontSize: 14,
         height: 1.5,
+        fontWeight: FontWeight.w500,
+      ),
+      labelSmall: GoogleFonts.inter(
+        color: AppColors.textSecondary,
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        height: 1.2,
+        letterSpacing: 1.2,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.primaryContainer,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        textStyle: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.w600),
       ),
     ),
     textButtonTheme: TextButtonThemeData(

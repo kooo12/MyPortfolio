@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:new_portfolio/core/theme/app_colors.dart';
 
+/// Lightweight animated background with fewer, slower particles
+/// and reduced blur for better scroll performance on web.
 class AnimatedBackground extends StatefulWidget {
   const AnimatedBackground({super.key});
 
@@ -18,11 +20,13 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
   @override
   void initState() {
     super.initState();
-    _particles = List.generate(25, (index) => _Particle());
+    // Reduced from 25 to 12 particles for performance
+    _particles = List.generate(12, (index) => _Particle());
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      // Slower animation = fewer repaints
+      duration: const Duration(seconds: 4),
     )..addListener(_updateParticles);
     _controller.repeat();
   }
@@ -59,6 +63,8 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
             child: CustomPaint(
               painter: _ParticlePainter(_particles, _controller),
               size: Size.infinite,
+              isComplex: true,
+              willChange: true,
             ),
           ),
         );
@@ -72,11 +78,12 @@ class _Particle {
   late double y;
   late double speedX;
   late double speedY;
-  final double size = Random().nextDouble() * 200 + 100;
+  // Smaller particles = less area to blur
+  final double size = Random().nextDouble() * 120 + 60;
   final Color color = [
-    AppColors.primary.withValues(alpha: 0.1),
-    AppColors.accent.withValues(alpha: 0.1),
-    AppColors.warmTeal.withValues(alpha: 0.1),
+    AppColors.primary.withValues(alpha: 0.04),
+    AppColors.accent.withValues(alpha: 0.03),
+    AppColors.primaryContainer.withValues(alpha: 0.03),
   ][Random().nextInt(3)];
 
   bool _isInitialized = false;
@@ -85,8 +92,9 @@ class _Particle {
     if (!_isInitialized) {
       x = Random().nextDouble() * canvasSize.width;
       y = Random().nextDouble() * canvasSize.height;
-      speedX = (Random().nextDouble() - 0.5) * 1.5;
-      speedY = (Random().nextDouble() - 0.5) * 1.5;
+      // Slower movement
+      speedX = (Random().nextDouble() - 0.5) * 0.8;
+      speedY = (Random().nextDouble() - 0.5) * 0.8;
       _isInitialized = true;
     }
   }
@@ -104,8 +112,9 @@ class _Particle {
 
 class _ParticlePainter extends CustomPainter {
   final List<_Particle> particles;
+  // Reduced blur sigma from 50 to 30 for performance
   final Paint _paint = Paint()
-    ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 50);
+    ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 30);
 
   _ParticlePainter(this.particles, Listenable repaint)
     : super(repaint: repaint);

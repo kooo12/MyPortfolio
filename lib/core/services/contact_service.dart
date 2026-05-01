@@ -9,9 +9,15 @@ class ContactService {
     required String name,
     required String email,
     required String message,
+    required String subject,
   }) async {
     try {
-      return await sendViaFormspree(name: name, email: email, message: message);
+      return await sendViaFormspree(
+        name: name,
+        email: email,
+        message: message,
+        subject: subject,
+      );
     } catch (e) {
       return {
         'success': false,
@@ -24,6 +30,7 @@ class ContactService {
     required String name,
     required String email,
     required String message,
+    required String subject,
   }) async {
     try {
       final response = await http.post(
@@ -32,7 +39,7 @@ class ContactService {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: jsonEncode({'name': name, 'email': email, 'message': message}),
+        body: jsonEncode({'name': name, 'email': email, 'message': message,'subject':subject}),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

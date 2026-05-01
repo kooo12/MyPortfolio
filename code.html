@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aung Ko Oo | Flutter Developer Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#b9c8de",
+                        "on-tertiary": "#2f3131",
+                        "surface-container-highest": "#353534",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#b9c8de",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container": "#201f1f",
+                        "secondary-fixed": "#d4e4fa",
+                        "surface-variant": "#353534",
+                        "outline-variant": "#414755",
+                        "on-secondary-container": "#a7b6cc",
+                        "surface-dim": "#131313",
+                        "primary": "#adc6ff",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary": "#002e69",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#0d1c2d",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary-fixed-variant": "#004493",
+                        "outline": "#8b90a0",
+                        "on-secondary": "#233143",
+                        "primary-fixed": "#d8e2ff",
+                        "on-surface-variant": "#c1c6d7",
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#005bc1",
+                        "tertiary-container": "#909191",
+                        "on-background": "#e5e2e1",
+                        "tertiary": "#c6c6c7",
+                        "surface-bright": "#393939",
+                        "surface-tint": "#adc6ff",
+                        "primary-container": "#4b8eff",
+                        "on-primary-fixed": "#001a41",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary-container": "#282a2a",
+                        "secondary-container": "#39485a",
+                        "primary-fixed-dim": "#adc6ff",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "on-secondary-fixed-variant": "#39485a",
+                        "surface": "#131313",
+                        "on-primary-container": "#00285c",
+                        "inverse-on-surface": "#313030"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "sm": "8px",
+                        "xxl": "96px",
+                        "xl": "48px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Space Grotesk"],
+                        "code": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Space Grotesk"],
+                        "label-caps": ["Inter"],
+                        "display": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "code": ["14px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h1": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 15px rgba(75, 142, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container flex flex-col min-h-screen">
+<!-- TopNavBar (JSON Injected) -->
+<nav class="fixed top-0 w-full z-50 bg-[#121212]/80 backdrop-blur-xl font-['Space_Grotesk'] tracking-tight border-b border-white/5 flex justify-between items-center px-6 md:px-24 h-20 max-w-screen-2xl mx-auto">
+<div class="text-xl font-bold text-white tracking-tighter">DevPortfolio</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-blue-500 font-semibold border-b-2 border-blue-500 pb-1 hover:bg-white/5 transition-all duration-300" href="#home">Home</a>
+<a class="text-gray-400 hover:text-white transition-colors hover:bg-white/5 transition-all duration-300" href="#projects">Projects</a>
+<a class="text-gray-400 hover:text-white transition-colors hover:bg-white/5 transition-all duration-300" href="#experience">Experience</a>
+<a class="text-gray-400 hover:text-white transition-colors hover:bg-white/5 transition-all duration-300" href="#contact">Contact</a>
+</div>
+<button class="bg-primary-container text-white px-6 py-2 rounded-DEFAULT font-h2 text-code hover:bg-opacity-90 glow-effect transition-all hidden md:block">Resume</button>
+<!-- Mobile Menu Toggle (Visual Only) -->
+<button class="md:hidden text-white">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-20">
+<!-- Section 1: Hero -->
+<section class="min-h-[921px] grid md:grid-cols-2 gap-xl items-center px-gutter py-xxl relative overflow-hidden max-w-container-max mx-auto" id="home">
+<!-- Subtle background glow -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] -z-10"></div>
+<div class="flex flex-col items-start text-left z-10">
+<h2 class="font-h2 text-primary tracking-widest mb-md uppercase text-sm">Aung Ko Oo</h2>
+<h1 class="font-display text-display mb-lg leading-tight">Engineering Fluid <br/><span class="text-surface-container-highest">Cross-Platform</span> Experiences</h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl mb-xl">Mid-Level Flutter Developer specializing in high-performance architectural patterns, clean code, and seamless UI/UX across iOS and Android ecosystems.</p>
+<div class="flex gap-md">
+<a class="bg-primary-container text-white px-8 py-3 rounded-DEFAULT font-h2 text-body-md glow-effect transition-all" href="#projects">View Selected Works</a>
+<a class="border border-outline-variant text-on-surface hover:bg-surface-container-highest px-8 py-3 rounded-DEFAULT font-h2 text-body-md transition-all" href="#contact">Let's Connect</a>
+</div>
+</div>
+<div class="flex justify-center md:justify-end z-10">
+<img alt="Profile of Aung Ko Oo" class="w-full max-w-md aspect-square rounded-2xl border-2 border-surface-container-highest object-cover grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500" data-alt="A cinematic, low-key lighting portrait of a technical professional looking thoughtfully slightly off-camera." src="https://lh3.googleusercontent.com/aida/ADBb0uhFxTu3D9399uKkBxdnnE6GFDkxQODbOibih4TXj9mc_wDLikYUxEmydp_VL_-srYvNNDkN33LHv-WhKjUXp6A_Ey35jvV-vopNj9dR6NW_Ilxd_yx4bHJHJm7T1rCc1X70SbJ9_cMZ8F5XZxRegz_RAeHPrS6l6NAdwAXJL_SRxxl7Jlc9pJgycWtMdRbBtZe1qWFmv21Zt1bupqy9qpukjqYCzyiWpd2WZyQQyBchOqGt6YO3cI-mUG8"/>
+</div>
+</section>
+<!-- Section 2: About / Technical Philosophy -->
+<section class="py-xxl px-gutter max-w-container-max mx-auto border-t border-surface-container-highest">
+<div class="grid md:grid-cols-2 gap-xl items-center">
+<div>
+<h2 class="font-h1 text-h1 mb-lg">Built on Precision &amp; Clean Code</h2>
+<p class="font-body-md text-on-surface-variant mb-md">My approach to mobile development roots deeply in architectural precision. I believe that a fluid user experience is directly tied to the robustness of the underlying codebase. Leveraging advanced Flutter capabilities, I architect scalable solutions that balance immediate feature delivery with long-term maintainability.</p>
+<p class="font-body-md text-on-surface-variant mb-lg">From complex state management to custom render objects, my focus remains on creating premium, jank-free interfaces that feel native to every platform.</p>
+<div class="flex flex-wrap gap-sm mt-lg">
+<span class="bg-surface-container-highest/50 text-tertiary px-3 py-1 rounded-sm font-code text-xs">Flutter</span>
+<span class="bg-surface-container-highest/50 text-tertiary px-3 py-1 rounded-sm font-code text-xs">Dart</span>
+<span class="bg-surface-container-highest/50 text-tertiary px-3 py-1 rounded-sm font-code text-xs">BLoC Pattern</span>
+<span class="bg-surface-container-highest/50 text-tertiary px-3 py-1 rounded-sm font-code text-xs">Firebase</span>
+<span class="bg-surface-container-highest/50 text-tertiary px-3 py-1 rounded-sm font-code text-xs">Clean Architecture</span>
+</div>
+</div>
+<div class="glass-panel p-lg rounded-xl relative overflow-hidden group">
+<!-- Code snippet visual representation -->
+<div class="absolute top-0 right-0 p-sm text-outline-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span>
+</div>
+<pre class="font-code text-code text-on-surface-variant overflow-x-auto"><code class="language-dart">
+class AppArchitecture extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) =&gt; ThemeCubit()),
+        BlocProvider(create: (_) =&gt; AuthBloc()),
+      ],
+      child: MaterialApp.router(
+        themeMode: ThemeMode.dark,
+        routerConfig: appRouter,
+        builder: (context, child) {
+          return PerformanceOverlay(
+            child: child!,
+          );
+        },
+      ),
+    );
+  }
+}
+                    </code></pre>
+</div>
+</div>
+</section>
+<!-- Section 3: Selected Works (Bento Grid) -->
+<section class="py-xxl px-gutter max-w-container-max mx-auto border-t border-surface-container-highest" id="projects">
+<h2 class="font-h1 text-h1 mb-xl text-center">Selected Works</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Project 1: Large Feature -->
+<div class="md:col-span-2 glass-panel rounded-xl overflow-hidden group flex flex-col">
+<div class="h-64 overflow-hidden relative">
+<div class="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-500"></div>
+<img alt="FinCore Mobile Banking" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" data-alt="A high-contrast, dark mode interface design mockup of a mobile banking application displayed on a sleek modern smartphone. The screen shows detailed financial graphs, bold typography, and electric blue accent charts. The background is a stark, minimal dark slate, emphasizing the sophisticated, 'Technical Premium' aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjkVkp88F7U3F_FVeOMEnPTliB_vjeVlY4MEo8KPj9E7DH3b3Tcb6geDqBqKBif_TEevWMhE1hWIzIAS8VNjiC5HtduI06d19XIcs9seLgHNJaPd-mx2xThMvb0ECbTz8rdIu8nnHST5AvqtjEVAepy2ME88NBkLMTNBFFH3TL8SWfQX3IPw59wW7T8-YTZtUSBjgQf_28MX8iLEEptn7hHOH6XyQswDg1EEK6Wp1Ttt_TieQp7kcKqALFyKnmYUe0epgFxqa69zY"/>
+</div>
+<div class="p-lg flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-h2 text-h2 text-on-surface">FinCore Mobile Banking</h3>
+<a class="text-primary hover:text-primary-container" href="#"><span class="material-symbols-outlined" data-icon="open_in_new">open_in_new</span></a>
+</div>
+<p class="font-body-md text-on-surface-variant mb-lg flex-grow">A secure, high-performance financial dashboard application featuring real-time transaction synchronization, encrypted local storage, and complex animated data visualizations using custom canvas rendering.</p>
+<div class="flex gap-sm">
+<span class="text-xs font-code text-tertiary">Flutter</span>
+<span class="text-xs font-code text-tertiary">•</span>
+<span class="text-xs font-code text-tertiary">Riverpod</span>
+<span class="text-xs font-code text-tertiary">•</span>
+<span class="text-xs font-code text-tertiary">gRPC</span>
+</div>
+</div>
+</div>
+<!-- Project 2: Smaller Square -->
+<div class="glass-panel rounded-xl overflow-hidden group flex flex-col">
+<div class="h-48 overflow-hidden relative">
+<img alt="Aura Commerce AR" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" data-alt="An abstract visualization of an Augmented Reality interface floating in a dark room. Glowing geometric shapes and UI elements in bright blue wireframes hover over a blurry, dark background. The image evokes cutting-edge technology, spatial computing, and a futuristic, premium developer experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXdAbkdsml1AzqwSBcwKXug6hmDNZnlG37eTCkPPJRhYswIP8LZmDJuNogwrH-TGKyYcLA6IcCp067ooT2RVNhfZNagVy_l7OjxCg-m56aTy0-Yq1EdUQRKk0uHNvl6YbVHSkW6vhu8YEdapLLn1TdJpXM_bIEyccptoPzbdl_YCxAmVcQW_wADo2JEzhs64wMntACRZUq1b0Iu4gjvwuOzs_wSgQxt_IXfzbxEB4b-GtuYNhLf4sj-oLZ7GeA5SZmimRrpevyHHs"/>
+</div>
+<div class="p-lg flex flex-col flex-grow">
+<h3 class="font-h2 text-body-lg font-bold text-on-surface mb-xs">Aura Commerce AR</h3>
+<p class="font-body-md text-on-surface-variant text-sm mb-md flex-grow">Integrating native ARKit/ARCore within a Flutter e-commerce flow for virtual product try-ons.</p>
+</div>
+</div>
+<!-- Project 3: Smaller Square -->
+<div class="glass-panel rounded-xl overflow-hidden group flex flex-col">
+<div class="h-48 overflow-hidden relative">
+<img alt="Nexus Code Generator" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" data-alt="A close-up shot of lines of code on a dark computer monitor. The syntax highlighting is exclusively in shades of electric blue and slate gray. The depth of field is very shallow, blurring the edges to focus tightly on the logic. The scene communicates deep technical architecture and clean code." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDc6tbnaCJaFJx0B5iNz1HgkcgQPnCZQe7Qb2GWsbER7a01EHDTLon7ElFs8gW2IkQqwu_l4coBOnDf1FWMwaN7tID5Zxu-WCj26_I0CXpj-hrnwKqD8N4iqTqP0HoPWCwoV01txsW6OIBurDOvNVfTc22Om3cOo6Z13KVHnKWeJ9SJ1QGn9t8iJAHizF95ZhrhMuhwaDm2m-2YSIz4JhM4Dh-u2edr07mD4Iyn9mL4B5R8f2Ps-fSxu5izckP8lqjJqsb4G3wpFc4"/>
+</div>
+<div class="p-lg flex flex-col flex-grow">
+<h3 class="font-h2 text-body-lg font-bold text-on-surface mb-xs">Nexus Code Gen</h3>
+<p class="font-body-md text-on-surface-variant text-sm mb-md flex-grow">Internal CLI tooling built with Dart to automate boilerplate generation for scalable feature modules.</p>
+</div>
+</div>
+<!-- Project 4: Horizontal -->
+<div class="md:col-span-2 glass-panel rounded-xl overflow-hidden group flex flex-col md:flex-row">
+<div class="h-48 md:h-auto md:w-1/2 overflow-hidden relative">
+<img alt="Vitals Health Portal" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" data-alt="A macro shot of a sleek smartwatch face displaying health metrics in a minimalist, dark theme UI. The data points, like heart rate and steps, glow in subtle neon blue against a pitch-black background. The lighting is dramatic, highlighting the curve of the glass and the precision of the digital craft." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVN6_K9UfQuklhFejSgMKN0D5umeMMJaBV_xx13ru4EsXznWiSWnGx7CreG8IUkICiG8FzanqcOqp2BeK626LF4VA61zX38dkR4bWNGlmHLuCkBWiGvhReZOmIen0JH3Tw5mN9KnmcvpRr4T0P-4T18pXMIi_TU8wE5z5rifmQ0mmAOMoscrjfrTotdnylE-NzOtUOv7ZdjveYT6bOhTuJ_lE7qt2zfJiGHI7eUZX2Um_rOW_3H3DrrXyfqpNiya7ATKrOZJc5ntM"/>
+</div>
+<div class="p-lg md:w-1/2 flex flex-col justify-center">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-h2 text-h2 text-on-surface">Vitals Health Portal</h3>
+</div>
+<p class="font-body-md text-on-surface-variant mb-lg">A unified patient telemetry dashboard bridging wearable device data with clinical backend systems via WebSockets, ensuring zero-latency updates.</p>
+<div class="flex gap-sm">
+<span class="text-xs font-code text-tertiary">Flutter</span>
+<span class="text-xs font-code text-tertiary">HealthKit/GoogleFit</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Experience -->
+<section class="py-xxl px-gutter max-w-container-max mx-auto border-t border-surface-container-highest"><div class="max-w-container-max mx-auto px-gutter">
+<div class="mb-xl">
+<h2 class="font-h1 text-h1 mb-md">Architectural Precision.</h2>
+<p class="font-body-md text-on-surface-variant max-w-3xl">
+            A track record of engineering scalable, high-performance Flutter applications. Specializing in declarative UI paradigms, state management mastery, and native-bridge integrations to deliver seamless cross-platform experiences.
+        </p>
+</div>
+<div class="flex items-center gap-2 mb-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24">settings_suggest</span>
+<h3 class="font-h2 text-h2 text-on-surface">Technical Arsenal</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Core Engine -->
+<div class="bg-surface-container-low border border-outline-variant/30 p-lg rounded-xl flex flex-col gap-md">
+<span class="font-label-caps text-on-surface-variant uppercase">Core Engine</span>
+<div class="flex flex-wrap gap-sm">
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Flutter</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Dart</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Custom Painters</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Animations API</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Method Channels</span>
+</div>
+</div>
+<!-- State & Architecture -->
+<div class="bg-surface-container-low border border-outline-variant/30 p-lg rounded-xl flex flex-col gap-md">
+<span class="font-label-caps text-on-surface-variant uppercase">State &amp; Architecture</span>
+<div class="flex flex-wrap gap-sm">
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">BLoC / Cubit</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Riverpod</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Clean Architecture</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Dependency Injection</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Freezed</span>
+</div>
+</div>
+<!-- Ecosystem & DevOps -->
+<div class="bg-surface-container-low border border-outline-variant/30 p-lg rounded-xl flex flex-col gap-md">
+<span class="font-label-caps text-on-surface-variant uppercase">Ecosystem &amp; DevOps</span>
+<div class="flex flex-wrap gap-sm">
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Firebase</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">GraphQL</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Codemagic CI/CD</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Supabase</span>
+<span class="bg-surface-container-highest/50 text-on-surface px-4 py-2 rounded-full text-sm font-medium">Sentry</span>
+</div>
+</div>
+</div>
+</div></section>
+<section class="py-xxl px-gutter max-w-container-max mx-auto border-t border-surface-container-highest" id="experience">
+<div class="mb-xl">
+<h2 class="font-h1 text-h1 mb-sm">Professional Trajectory</h2>
+<p class="font-body-md text-on-surface-variant">Architectural precision honed through years of dedicated cross-platform engineering.</p>
+</div>
+<div class="flex flex-col gap-xl">
+<!-- Role 1 -->
+<div class="grid md:grid-cols-12 gap-lg border-t border-surface-container-highest pt-lg">
+<div class="md:col-span-4">
+<h3 class="font-h2 text-h2 text-on-surface mb-xs">Senior Mobile Engineer</h3>
+<h4 class="font-h2 text-body-lg text-primary mb-xs">TechCorp Innovators</h4>
+<span class="font-code text-sm text-tertiary">2023 - Present</span>
+</div>
+<div class="md:col-span-8">
+<p class="font-body-md text-on-surface-variant">Spearheaded the migration of legacy native apps to a unified Flutter architecture. Reduced crash rates by 40% and improved team velocity by establishing strict CI/CD pipelines and a modular code structure based on Clean Architecture principles.</p>
+</div>
+</div>
+<!-- Role 2 -->
+<div class="grid md:grid-cols-12 gap-lg border-t border-surface-container-highest pt-lg">
+<div class="md:col-span-4">
+<h3 class="font-h2 text-h2 text-on-surface mb-xs">Flutter Developer</h3>
+<h4 class="font-h2 text-body-lg text-primary mb-xs">Startup Studio X</h4>
+<span class="font-code text-sm text-tertiary">2020 - 2023</span>
+</div>
+<div class="md:col-span-8">
+<p class="font-body-md text-on-surface-variant">Developed and launched 5+ MVP applications for early-stage startups. Focused heavily on rapid prototyping, fluid UI animations, and integrating complex RESTful APIs and Firebase backend services.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Contact -->
+<section class="px-gutter max-w-container-max mx-auto border-t border-surface-container-highest py-xxl" id="contact"><div class="max-w-container-max mx-auto px-gutter">
+<div class="mb-xl">
+<h2 class="font-display text-h1 mb-md">Let's Connect</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl">Looking to collaborate on an architecture project or just want to say hi? My inbox is always open.</p>
+</div>
+<div class="grid md:grid-cols-2 gap-xl">
+<!-- Contact Form -->
+<div class="bg-surface-container-low border border-outline-variant/20 p-xl rounded-xl">
+<form class="flex flex-col gap-lg">
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-on-surface-variant">Name</label>
+<input class="bg-transparent border-0 border-b border-outline-variant focus:border-primary focus:ring-0 px-0 py-2 text-on-surface placeholder:text-surface-container-highest transition-colors" placeholder="John Doe" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-on-surface-variant">Email</label>
+<input class="bg-transparent border-0 border-b border-outline-variant focus:border-primary focus:ring-0 px-0 py-2 text-on-surface placeholder:text-surface-container-highest transition-colors" placeholder="john@example.com" type="email"/>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-on-surface-variant">Subject</label>
+<input class="bg-transparent border-0 border-b border-outline-variant focus:border-primary focus:ring-0 px-0 py-2 text-on-surface placeholder:text-surface-container-highest transition-colors" placeholder="Architecture Consultation" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-on-surface-variant">Message</label>
+<textarea class="bg-transparent border-0 border-b border-outline-variant focus:border-primary focus:ring-0 px-0 py-2 text-on-surface placeholder:text-surface-container-highest transition-colors resize-none" placeholder="Tell me about your project..." rows="4"></textarea>
+</div>
+<button class="self-end flex items-center gap-2 bg-primary-container text-white px-6 py-3 rounded-DEFAULT font-h2 text-body-md hover:bg-opacity-90 glow-effect transition-all" type="submit">
+                    Send Message
+                    <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</form>
+</div>
+<!-- Social & Location -->
+<div class="flex flex-col gap-lg">
+<div class="bg-surface-container-low border border-outline-variant/20 p-xl rounded-xl">
+<h3 class="font-h2 text-h2 mb-lg">Social Profiles</h3>
+<div class="flex flex-col gap-md">
+<a class="flex items-center justify-between group" href="#">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">code</span>
+</div>
+<div>
+<div class="font-bold text-on-surface">GitHub</div>
+<div class="text-sm text-on-surface-variant">@devportfolio</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-all group-hover:translate-x-1">north_east</span>
+</a>
+<a class="flex items-center justify-between group" href="#">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">business_center</span>
+</div>
+<div>
+<div class="font-bold text-on-surface">LinkedIn</div>
+<div class="text-sm text-on-surface-variant">in/devportfolio</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-all group-hover:translate-x-1">north_east</span>
+</a>
+<a class="flex items-center justify-between group" href="#">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chat</span>
+</div>
+<div>
+<div class="font-bold text-on-surface">Twitter</div>
+<div class="text-sm text-on-surface-variant">@devportfolio_tech</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-all group-hover:translate-x-1">north_east</span>
+</a>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/20 p-lg rounded-xl flex items-center gap-md">
+<div class="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div>
+<div class="font-bold text-on-surface">Location</div>
+<div class="text-on-surface-variant">San Francisco, CA</div>
+<div class="text-xs text-primary mt-1">Available for remote opportunities.</div>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+</main>
+<!-- Footer (JSON Injected) -->
+<footer class="w-full py-12 mt-20 border-t border-white/5 bg-[#121212] font-['Space_Grotesk'] text-sm uppercase tracking-widest flex flex-col md:flex-row justify-between items-center px-6 md:px-24 gap-6">
+<div class="text-gray-600">© 2026 Engineered with Flutter</div>
+<div class="flex gap-6">
+<a class="text-gray-600 hover:text-blue-400 underline-offset-4 hover:underline transition-colors" href="#">GitHub</a>
+<a class="text-gray-600 hover:text-blue-400 underline-offset-4 hover:underline transition-colors" href="#">LinkedIn</a>
+<a class="text-gray-600 hover:text-blue-400 underline-offset-4 hover:underline transition-colors" href="#">Twitter</a>
+</div>
+</footer>
+</body></html>

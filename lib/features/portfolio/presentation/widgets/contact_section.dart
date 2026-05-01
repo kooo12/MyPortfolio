@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:new_portfolio/core/services/contact_service.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../shared/widgets/glass_container.dart';
 import '../../data/repositories/portfolio_repository.dart';
+import '../../domain/models/portfolio_models.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -15,575 +14,323 @@ class ContactSection extends StatefulWidget {
 }
 
 class _ContactSectionState extends State<ContactSection> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _messageController = TextEditingController();
-  final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  final _nameCtrl = TextEditingController();
+  final _emailCtrl = TextEditingController();
+  final _subjectCtrl = TextEditingController();
+  final _messageCtrl = TextEditingController();
+  final _form = GlobalKey<FormState>();
   bool _isSent = false;
-  String? _errorMessage;
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController.addListener(_clearError);
-    _emailController.addListener(_clearError);
-    _messageController.addListener(_clearError);
-  }
+  bool _isLoading = false;
+  String? _error;
 
   @override
   void dispose() {
-    _nameController.removeListener(_clearError);
-    _emailController.removeListener(_clearError);
-    _messageController.removeListener(_clearError);
+    _nameCtrl.dispose();
+    _emailCtrl.dispose();
+    _subjectCtrl.dispose();
+    _messageCtrl.dispose();
     super.dispose();
-  }
-
-  void _clearError() {
-    if (_errorMessage != null) {
-      setState(() => _errorMessage = null);
-    }
-  }
-
-  void _resetForm() {
-    setState(() {
-      _isSent = false;
-      _errorMessage = null;
-      _nameController.clear();
-      _emailController.clear();
-      _messageController.clear();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isMobile = size.width < 900;
-    final padding = isMobile ? 24.0 : 100.0;
-
+    final padding = isMobile ? 24.0 : 96.0;
     final contactData = PortfolioRepository.data.contact;
 
     return Container(
-      constraints: BoxConstraints(minHeight: size.height),
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: padding, vertical: 80),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'GET IN TOUCH',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.accent,
-              letterSpacing: 2,
-              fontWeight: FontWeight.bold,
-            ),
-          ).animate().fadeIn().slideX(begin: -0.1),
-          const SizedBox(height: 50),
-          Flex(
-            direction: isMobile ? Axis.vertical : Axis.horizontal,
+      padding: EdgeInsets.symmetric(horizontal: padding, vertical: 96),
+      decoration: const BoxDecoration(
+        border: Border(top: BorderSide(color: AppColors.surfaceContainerHighest)),
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: isMobile ? 0 : 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _ContactInfoItem(
-                      icon: Icons.email_rounded,
-                      title: 'Email',
-                      value: contactData.email,
-                      delay: 100,
+              Text("Let's Connect", style: GoogleFonts.spaceGrotesk(color: AppColors.textPrimary, fontSize: isMobile ? 32 : 48, fontWeight: FontWeight.w600)).animate().fadeIn(),
+              const SizedBox(height: 8),
+              Text('Looking to collaborate on an architecture project or just want to say hi? My inbox is always open.', style: GoogleFonts.inter(color: AppColors.textSecondary, fontSize: 16, height: 1.6)).animate().fadeIn(delay: 100.ms),
+              const SizedBox(height: 48),
+              Flex(
+                direction: isMobile ? Axis.vertical : Axis.horizontal,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Form
+                  Expanded(
+                    flex: isMobile ? 0 : 1,
+                    child: _buildForm(context),
+                  ),
+                  SizedBox(width: isMobile ? 0 : 48, height: isMobile ? 48 : 0),
+                  // Social + Location
+                  Expanded(
+                    flex: isMobile ? 0 : 1,
+                    child: Column(
+                      children: [
+                        _buildSocialCard(contactData),
+                        const SizedBox(height: 16),
+                        _buildLocationCard(contactData),
+                      ],
                     ),
-                    _ContactInfoItem(
-                      icon: Icons.phone_rounded,
-                      title: 'Phone',
-                      value: contactData.phone,
-                      delay: 200,
-                    ),
-                    _ContactInfoItem(
-                      icon: Icons.location_on_rounded,
-                      title: 'Location',
-                      value: contactData.location,
-                      delay: 300,
-                    ),
-                    const SizedBox(height: 40),
-                    Text(
-                      'SOCIALS',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.textDim,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ).animate().fadeIn(delay: 400.ms),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: contactData.socials.asMap().entries.map((
-                        entry,
-                      ) {
-                        final index = entry.key;
-                        final social = entry.value;
-                        return _SocialButton(
-                          icon: social.icon,
-                          delay: (500 + (index * 100)).toInt(),
-                          onTap: () {
-                            launchUrl(Uri.parse(social.url));
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-              if (isMobile) const SizedBox(height: 60),
-              if (!isMobile) const SizedBox(width: 60),
-
-              Expanded(
-                flex: isMobile ? 0 : 3,
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  transitionBuilder:
-                      (Widget child, Animation<double> animation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0, 0.1),
-                              end: Offset.zero,
-                            ).animate(animation),
-                            child: child,
-                          ),
-                        );
-                      },
-                  child: _isSent
-                      ? _SuccessView(
-                          key: const ValueKey('success'),
-                          onReset: _resetForm,
-                        )
-                      : GlassContainer(
-                          key: const ValueKey('form'),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Form(
-                              key: _form,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _ContactField(
-                                    label: 'Name',
-                                    hint: 'Your Name',
-                                    controller: _nameController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your name';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  _ContactField(
-                                    label: 'Email',
-                                    hint: 'Your Email',
-                                    controller: _emailController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your email';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  _ContactField(
-                                    label: 'Message',
-                                    hint: 'Your Message',
-                                    maxLines: 2,
-                                    controller: _messageController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your message';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  const SizedBox(height: 40),
-                                  if (_errorMessage != null)
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 20,
-                                      ),
-                                      child:
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                              vertical: 12,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.red.withValues(
-                                                alpha: 0.1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: Colors.red.withValues(
-                                                  alpha: 0.2,
-                                                ),
-                                              ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.error_outline_rounded,
-                                                  color: Colors.redAccent,
-                                                  size: 20,
-                                                ),
-                                                const SizedBox(width: 12),
-                                                Expanded(
-                                                  child: Text(
-                                                    _errorMessage!,
-                                                    style: const TextStyle(
-                                                      color: Colors.redAccent,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ).animate().shake(
-                                            hz: 4,
-                                            curve: Curves.easeInOut,
-                                          ),
-                                    ),
-                                  _SendButton(
-                                    formKey: _form,
-                                    nameController: _nameController,
-                                    emailController: _emailController,
-                                    messageController: _messageController,
-                                    onSuccess: () =>
-                                        setState(() => _isSent = true),
-                                    onError: (error) =>
-                                        setState(() => _errorMessage = error),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
+                  ),
+                ],
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
+    if (_isSent) {
+      return _buildSuccessView();
+    }
+    return Container(
+      padding: const EdgeInsets.all(48),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.outlineVariant.withValues(alpha: 0.2)),
+      ),
+      child: Form(
+        key: _form,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(child: _field('NAME', 'John Doe', _nameCtrl)),
+                const SizedBox(width: 16),
+                Expanded(child: _field('EMAIL', 'john@example.com', _emailCtrl)),
+              ],
+            ),
+            const SizedBox(height: 24),
+            _field('SUBJECT', 'Architecture Consultation', _subjectCtrl),
+            const SizedBox(height: 24),
+            _field('MESSAGE', 'Tell me about your project...', _messageCtrl, maxLines: 4),
+            if (_error != null) ...[
+              const SizedBox(height: 16),
+              Text(_error!, style: const TextStyle(color: Colors.redAccent, fontSize: 14)),
+            ],
+            const SizedBox(height: 32),
+            Align(
+              alignment: Alignment.centerRight,
+              child: _SendButton(
+                isLoading: _isLoading,
+                onPressed: _submit,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ).animate().fadeIn(delay: 200.ms);
+  }
+
+  Widget _field(String label, String hint, TextEditingController ctrl, {int maxLines = 1}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: GoogleFonts.inter(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 1.2)),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: ctrl,
+          maxLines: maxLines,
+          style: GoogleFonts.inter(color: AppColors.textPrimary),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(color: AppColors.surfaceContainerHighest),
+            filled: false,
+            border: const UnderlineInputBorder(borderSide: BorderSide(color: AppColors.outlineVariant)),
+            enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColors.outlineVariant)),
+            focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColors.primary)),
+            contentPadding: const EdgeInsets.symmetric(vertical: 8),
+          ),
+          validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSocialCard(ContactData contactData) {
+    final socials = [
+      {'icon': Icons.code, 'name': 'GitHub', 'handle': '@kooo12'},
+      {'icon': Icons.business_center, 'name': 'LinkedIn', 'handle': 'in/aung-ko-oo'},
+      {'icon': Icons.chat, 'name': 'Telegram', 'handle': '@kooo2109'},
+    ];
+
+    return Container(
+      padding: const EdgeInsets.all(48),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.outlineVariant.withValues(alpha: 0.2)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Social Profiles', style: GoogleFonts.spaceGrotesk(color: AppColors.textPrimary, fontSize: 32, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 24),
+          ...socials.map((s) => _SocialRow(icon: s['icon'] as IconData, name: s['name'] as String, handle: s['handle'] as String)),
+        ],
+      ),
+    ).animate().fadeIn(delay: 300.ms);
+  }
+
+  Widget _buildLocationCard(ContactData contactData) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.outlineVariant.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48, height: 48,
+            decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
+            child: const Icon(Icons.location_on, color: AppColors.primary),
+          ),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Location', style: GoogleFonts.inter(color: AppColors.textPrimary, fontWeight: FontWeight.w700)),
+              Text(contactData.location, style: GoogleFonts.inter(color: AppColors.textSecondary)),
+              Text('Available for remote opportunities.', style: GoogleFonts.inter(color: AppColors.primary, fontSize: 12)),
+            ],
+          ),
+        ],
+      ),
+    ).animate().fadeIn(delay: 400.ms);
+  }
+
+  Widget _buildSuccessView() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 32),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.outlineVariant.withValues(alpha: 0.2)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.check_circle_outline, color: Colors.green, size: 60),
+          const SizedBox(height: 24),
+          Text('MESSAGE SENT!', style: GoogleFonts.spaceGrotesk(color: AppColors.textPrimary, fontSize: 24, fontWeight: FontWeight.w700)),
+          const SizedBox(height: 12),
+          Text('Thank you for reaching out.', style: GoogleFonts.inter(color: AppColors.textDim, fontSize: 16)),
+          const SizedBox(height: 32),
+          OutlinedButton(onPressed: () => setState(() { _isSent = false; _error = null; _nameCtrl.clear(); _emailCtrl.clear(); _subjectCtrl.clear(); _messageCtrl.clear(); }), style: OutlinedButton.styleFrom(side: const BorderSide(color: AppColors.accent)), child: const Text('SEND ANOTHER', style: TextStyle(color: AppColors.accent))),
         ],
       ),
     );
   }
-}
 
-class _ContactInfoItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String value;
-  final int delay;
-
-  const _ContactInfoItem({
-    required this.icon,
-    required this.title,
-    required this.value,
-    required this.delay,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30.0),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.accent.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: AppColors.accent, size: 24),
-          ),
-          const SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(color: AppColors.textDim, fontSize: 12),
-              ),
-              Text(
-                value,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ).animate().fadeIn(delay: delay.ms).slideX(begin: -0.1);
+  Future<void> _submit() async {
+    if (!(_form.currentState?.validate() ?? false)) return;
+    setState(() { _isLoading = true; _error = null; });
+    try {
+      final res = await ContactService().sendMessage(
+        name: _nameCtrl.text,
+        email: _emailCtrl.text,
+        subject: _subjectCtrl.text,
+        message: _messageCtrl.text,
+      );
+      if (!mounted) return;
+      if (res['success']) { setState(() => _isSent = true); } else { setState(() => _error = res['message']); }
+    } catch (_) { if (mounted) setState(() => _error = 'Connection error.'); }
+    finally { if (mounted) setState(() => _isLoading = false); }
   }
 }
 
-class _SocialButton extends StatelessWidget {
+class _SocialRow extends StatefulWidget {
   final IconData icon;
-  final int delay;
-  final VoidCallback onTap;
-
-  const _SocialButton({
-    required this.icon,
-    required this.delay,
-    required this.onTap,
-  });
-
+  final String name;
+  final String handle;
+  const _SocialRow({required this.icon, required this.name, required this.handle});
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          ),
-          child: FaIcon(icon, color: AppColors.textPrimary, size: 20),
-        ),
-      ),
-    ).animate().fadeIn(delay: delay.ms).scale();
-  }
+  State<_SocialRow> createState() => _SocialRowState();
 }
 
-class _ContactField extends StatelessWidget {
-  final String label;
-  final String hint;
-
-  final int maxLines;
-  final TextEditingController controller;
-  final FormFieldValidator<String>? validator;
-
-  const _ContactField({
-    required this.label,
-    required this.hint,
-    required this.controller,
-    required this.validator,
-    this.maxLines = 1,
-  });
-
+class _SocialRowState extends State<_SocialRow> {
+  bool _hovered = false;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          maxLines: maxLines,
-          controller: controller,
-          style: const TextStyle(color: AppColors.textPrimary),
-          validator: validator,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(
-              color: AppColors.textPrimary.withValues(alpha: 0.3),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Row(
+          children: [
+            Container(
+              width: 40, height: 40,
+              alignment: Alignment.center,
+              child: Icon(widget.icon, color: _hovered ? AppColors.primary : AppColors.textSecondary, size: 20),
             ),
-            filled: true,
-
-            fillColor: Colors.white.withValues(alpha: 0.05),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.white.withValues(alpha: 0.1),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.name, style: GoogleFonts.inter(color: AppColors.textPrimary, fontWeight: FontWeight.w700)),
+                  Text(widget.handle, style: GoogleFonts.inter(color: AppColors.textSecondary, fontSize: 14)),
+                ],
               ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.accent),
+            AnimatedSlide(
+              duration: const Duration(milliseconds: 200),
+              offset: Offset(_hovered ? 0.1 : 0, 0),
+              child: Icon(Icons.north_east, color: _hovered ? AppColors.primary : AppColors.textSecondary, size: 18),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
 
 class _SendButton extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController nameController;
-  final TextEditingController emailController;
-  final TextEditingController messageController;
-  final VoidCallback onSuccess;
-  final Function(String) onError;
-
-  const _SendButton({
-    required this.formKey,
-    required this.nameController,
-    required this.emailController,
-    required this.messageController,
-    required this.onSuccess,
-    required this.onError,
-  });
-
+  final bool isLoading;
+  final VoidCallback onPressed;
+  const _SendButton({required this.isLoading, required this.onPressed});
   @override
-  _SendButtonState createState() => _SendButtonState();
+  State<_SendButton> createState() => _SendButtonState();
 }
 
 class _SendButtonState extends State<_SendButton> {
-  bool _isLoading = false;
-
+  bool _hovered = false;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.isLoading ? null : widget.onPressed,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          decoration: BoxDecoration(
+            color: AppColors.primaryContainer,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: _hovered ? [BoxShadow(color: AppColors.primaryContainer.withValues(alpha: 0.3), blurRadius: 15)] : [],
           ),
-          backgroundColor: AppColors.accent,
-          elevation: 8,
-          shadowColor: AppColors.accent.withValues(alpha: 0.3),
-        ),
-        onPressed: _isLoading
-            ? null
-            : () async {
-                if (widget.formKey.currentState?.validate() ?? false) {
-                  setState(() {
-                    _isLoading = true;
-                  });
-
-                  try {
-                    final response = await ContactService().sendMessage(
-                      name: widget.nameController.text,
-                      email: widget.emailController.text,
-                      message: widget.messageController.text,
-                    );
-
-                    if (!mounted) return;
-
-                    if (response['success']) {
-                      widget.onSuccess();
-                    } else {
-                      widget.onError(response['message']);
-                    }
-                  } catch (e) {
-                    if (mounted) {
-                      widget.onError('Connection error. Please try again.');
-                    }
-                  } finally {
-                    if (mounted) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                    }
-                  }
-                }
-              },
-        child: _isLoading
-            ? SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
+          child: widget.isLoading
+              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Send Message', style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.arrow_right_alt, color: Colors.white, size: 20),
+                  ],
                 ),
-              )
-            : const Text(
-                'SEND MESSAGE',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                ),
-              ),
-      ),
-    );
-  }
-}
-
-class _SuccessView extends StatelessWidget {
-  final VoidCallback onReset;
-
-  const _SuccessView({super.key, required this.onReset});
-
-  @override
-  Widget build(BuildContext context) {
-    return GlassContainer(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.check_circle_outline_rounded,
-                color: Colors.green,
-                size: 60,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'MESSAGE SENT!',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Thank you for reaching out. I will get back to you as soon as possible.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.textDim,
-                fontSize: 16,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 40),
-            OutlinedButton(
-              onPressed: onReset,
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
-                ),
-                side: const BorderSide(color: AppColors.accent),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text(
-                'SEND ANOTHER MESSAGE',
-                style: TextStyle(
-                  color: AppColors.accent,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.1,
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

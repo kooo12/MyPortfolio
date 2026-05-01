@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color background = Color(0xFF161617);
-  static const Color backgroundBottom = Color(0xFF0F0F10);
-  static const Color surface = Color(0xFF1C1C1E);
-  static const Color surfaceLight = Color(0xFF2C2C2E);
+  // Surfaces
+  static const Color background = Color(0xFF131313);
+  static const Color backgroundBottom = Color(0xFF0E0E0E);
+  static const Color surface = Color(0xFF1C1B1B);
+  static const Color surfaceLight = Color(0xFF2A2A2A);
+  static const Color surfaceContainer = Color(0xFF201F1F);
+  static const Color surfaceContainerHigh = Color(0xFF2A2A2A);
+  static const Color surfaceContainerHighest = Color(0xFF353534);
 
-  static const Color accent = Color(0xFFD4AF37);
-  static const Color primary = Color(0xFFB4975A);
-  static const Color secondary = Color(0xFF454B4F);
-  static const Color highlight = Color(0xFF708090);
+  // Primary / Accent — Electric Blue
+  static const Color accent = Color(0xFF4B8EFF);
+  static const Color primary = Color(0xFFADC6FF);
+  static const Color primaryContainer = Color(0xFF4B8EFF);
+  static const Color secondary = Color(0xFF39485A);
+  static const Color highlight = Color(0xFF8B90A0);
   static const Color warmTeal = Color(0xFF2F4F4F);
 
-  static const Color textPrimary = Color(0xFFE5E5E7);
-  static const Color textSecondary = Color(0xFFA1A1AA);
-  static const Color textDim = Color(0xFF71717A);
+  // Text
+  static const Color textPrimary = Color(0xFFE5E2E1);
+  static const Color textSecondary = Color(0xFFC1C6D7);
+  static const Color textDim = Color(0xFF8B90A0);
 
+  // Outline
+  static const Color outline = Color(0xFF8B90A0);
+  static const Color outlineVariant = Color(0xFF414755);
+
+  // Gradients
   static const LinearGradient bgGradient = LinearGradient(
     colors: [background, backgroundBottom],
     begin: Alignment.topCenter,

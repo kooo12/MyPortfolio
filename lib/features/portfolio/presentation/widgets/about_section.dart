@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:new_portfolio/features/portfolio/data/repositories/portfolio_repository.dart';
-import 'package:new_portfolio/shared/widgets/glass_container.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class AboutSection extends StatelessWidget {
@@ -11,166 +11,234 @@ class AboutSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isMobile = size.width < 900;
-    final padding = isMobile ? 24.0 : 100.0;
+    final padding = isMobile ? 24.0 : 96.0;
 
     final aboutData = PortfolioRepository.data.about;
 
     return Container(
-      constraints: BoxConstraints(minHeight: size.height),
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: padding, vertical: 80),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            aboutData.title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.accent,
-              letterSpacing: 2,
-              fontWeight: FontWeight.bold,
-            ),
-          ).animate().fadeIn().slideX(begin: -0.1),
-          const SizedBox(height: 50),
-          Flex(
+      padding: EdgeInsets.symmetric(horizontal: padding, vertical: 96),
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(color: AppColors.surfaceContainerHighest, width: 1),
+        ),
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Flex(
             direction: isMobile ? Axis.vertical : Axis.horizontal,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Left: Title + Description + Tags
               Expanded(
-                flex: isMobile ? 0 : 3,
-                child: GlassContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          aboutData.bio1,
-                          style: Theme.of(context).textTheme.bodyLarge
-                              ?.copyWith(
-                                height: 1.6,
-                                color: AppColors.textPrimary,
-                              ),
-                        ),
-                        const SizedBox(height: 24),
-                        Text(
-                          aboutData.bio2,
-                          style: Theme.of(context).textTheme.bodyLarge
-                              ?.copyWith(
-                                height: 1.6,
-                                color: AppColors.textSecondary,
-                              ),
-                        ),
-                        const SizedBox(height: 32),
-                        Wrap(
-                          spacing: 12,
-                          runSpacing: 12,
-                          children: aboutData.tags
-                              .map((tag) => _InfoTag(label: tag))
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
-              ),
-              if (isMobile) const SizedBox(height: 40),
-              if (!isMobile) ...[
-                const SizedBox(width: 80),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: aboutData.stats
-                        .map(
-                          (stat) => Padding(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            child: _StatCard(
-                              number: stat.number,
-                              label: stat.label,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
+                flex: isMobile ? 0 : 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      aboutData.title,
+                      style: GoogleFonts.spaceGrotesk(
+                        color: AppColors.textPrimary,
+                        fontSize: isMobile ? 32 : 48,
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
+                        letterSpacing: -0.96,
+                      ),
+                    ).animate().fadeIn().slideX(begin: -0.1),
+
+                    const SizedBox(height: 24),
+
+                    Text(
+                      aboutData.bio1,
+                      style: GoogleFonts.inter(
+                        color: AppColors.textSecondary,
+                        fontSize: 16,
+                        height: 1.6,
+                      ),
+                    ).animate().fadeIn(delay: 200.ms),
+
+                    const SizedBox(height: 16),
+
+                    Text(
+                      aboutData.bio2,
+                      style: GoogleFonts.inter(
+                        color: AppColors.textSecondary,
+                        fontSize: 16,
+                        height: 1.6,
+                      ),
+                    ).animate().fadeIn(delay: 300.ms),
+
+                    const SizedBox(height: 32),
+
+                    // Tech Tags
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: aboutData.tags
+                          .map((tag) => _TechChip(label: tag))
+                          .toList(),
+                    ).animate().fadeIn(delay: 400.ms),
+                  ],
                 ),
-              ],
+              ),
+
+              SizedBox(width: isMobile ? 0 : 48, height: isMobile ? 48 : 0),
+
+              // Right: Code Snippet
+              Expanded(
+                flex: isMobile ? 0 : 1,
+                child: const _CodeSnippetPanel(),
+              ),
             ],
           ),
-
-          if (isMobile)
-            Column(
-              children: aboutData.stats
-                  .map(
-                    (stat) => Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: _StatCard(number: stat.number, label: stat.label),
-                    ),
-                  )
-                  .toList(),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoTag extends StatelessWidget {
-  final String label;
-  const _InfoTag({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.accent.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.accent.withValues(alpha: 0.2)),
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: AppColors.accent,
-          fontWeight: FontWeight.bold,
-          fontSize: 12,
         ),
       ),
     );
   }
 }
 
-class _StatCard extends StatelessWidget {
-  final String number;
+class _TechChip extends StatelessWidget {
   final String label;
-
-  const _StatCard({required this.number, required this.label});
+  const _TechChip({required this.label});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+        color: AppColors.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(4),
       ),
-      child: Column(
-        children: [
-          Text(
-            number,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: AppColors.accent,
+      child: Text(
+        label,
+        style: GoogleFonts.inter(
+          color: AppColors.textSecondary,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+class _CodeSnippetPanel extends StatefulWidget {
+  const _CodeSnippetPanel();
+
+  @override
+  State<_CodeSnippetPanel> createState() => _CodeSnippetPanelState();
+}
+
+class _CodeSnippetPanelState extends State<_CodeSnippetPanel> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E).withValues(alpha: 0.4),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: _isHovered ? 0.1 : 0.05),
+          ),
+        ),
+        child: Stack(
+          children: [
+            // Copy icon
+            Positioned(
+              top: 0,
+              right: 0,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: _isHovered ? 1.0 : 0.5,
+                child: Icon(
+                  Icons.content_copy,
+                  size: 16,
+                  color: _isHovered
+                      ? AppColors.primary
+                      : AppColors.outlineVariant,
+                ),
+              ),
             ),
-          ),
-          Text(
-            label,
-            style: const TextStyle(color: AppColors.textDim, fontSize: 14),
-          ),
-        ],
-      ),
-    ).animate().fadeIn().scale(delay: 400.ms);
+
+            // Code content
+            SelectableText.rich(
+              TextSpan(
+                style: GoogleFonts.firaCode(
+                  fontSize: 14,
+                  height: 1.5,
+                  color: AppColors.textSecondary,
+                ),
+                children: [
+                  TextSpan(
+                    text: 'class ',
+                    style: TextStyle(color: AppColors.accent),
+                  ),
+                  const TextSpan(
+                    text: 'AppArchitecture ',
+                    style: TextStyle(color: Color(0xFF4EC9B0)),
+                  ),
+                  TextSpan(
+                    text: 'extends ',
+                    style: TextStyle(color: AppColors.accent),
+                  ),
+                  const TextSpan(
+                    text: 'StatelessWidget ',
+                    style: TextStyle(color: Color(0xFF4EC9B0)),
+                  ),
+                  const TextSpan(text: '{\n'),
+                  const TextSpan(text: '  @override\n'),
+                  const TextSpan(text: '  Widget '),
+                  TextSpan(
+                    text: 'build',
+                    style: TextStyle(color: AppColors.accent),
+                  ),
+                  const TextSpan(text: '(BuildContext context) {\n'),
+                  const TextSpan(text: '    return '),
+                  const TextSpan(
+                    text: 'MultiBlocProvider',
+                    style: TextStyle(color: Color(0xFF4EC9B0)),
+                  ),
+                  const TextSpan(text: '(\n'),
+                  const TextSpan(text: '      providers: [\n'),
+                  const TextSpan(text: '        BlocProvider(\n'),
+                  const TextSpan(text: '          create: (_) => '),
+                  const TextSpan(
+                    text: 'ThemeCubit',
+                    style: TextStyle(color: Color(0xFF4EC9B0)),
+                  ),
+                  const TextSpan(text: '()),\n'),
+                  const TextSpan(text: '        BlocProvider(\n'),
+                  const TextSpan(text: '          create: (_) => '),
+                  const TextSpan(
+                    text: 'AuthBloc',
+                    style: TextStyle(color: Color(0xFF4EC9B0)),
+                  ),
+                  const TextSpan(text: '()),\n'),
+                  const TextSpan(text: '      ],\n'),
+                  const TextSpan(text: '      child: '),
+                  const TextSpan(
+                    text: 'MaterialApp',
+                    style: TextStyle(color: Color(0xFF4EC9B0)),
+                  ),
+                  const TextSpan(text: '.router(\n'),
+                  const TextSpan(text: '        themeMode: ThemeMode.dark,\n'),
+                  const TextSpan(text: '        routerConfig: appRouter,\n'),
+                  const TextSpan(text: '      ),\n'),
+                  const TextSpan(text: '    );\n'),
+                  const TextSpan(text: '  }\n'),
+                  const TextSpan(text: '}'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
+    );
   }
 }

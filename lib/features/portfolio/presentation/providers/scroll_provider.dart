@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,25 +37,44 @@ class ScrollState {
 }
 
 class ScrollNotifier extends StateNotifier<ScrollState> {
+  Timer? _throttleTimer;
+
   ScrollNotifier()
     : super(
         ScrollState(
           controller: ScrollController(),
           sectionKeys: {
-            0: GlobalKey(),
-            1: GlobalKey(),
-            2: GlobalKey(),
-            3: GlobalKey(),
-            4: GlobalKey(),
-            5: GlobalKey(),
+            0: GlobalKey(), // Home / Hero
+            1: GlobalKey(), // About
+            2: GlobalKey(), // Projects
+            3: GlobalKey(), // Experience (Skills + Experience)
+            4: GlobalKey(), // Contact
           },
         ),
       ) {
-    state.controller.addListener(_scrollListener);
+    state.controller.addListener(_onScroll);
   }
 
-  void _scrollListener() {
+  /// Lightweight listener — only updates offset for nav bar opacity.
+  /// Section detection is throttled to run at most every 150ms.
+  void _onScroll() {
     final offset = state.controller.offset;
+
+    // Always update offset (cheap — just a double comparison)
+    if ((offset - state.scrollOffset).abs() > 2) {
+      state = state.copyWith(scrollOffset: offset);
+    }
+
+    // Throttle the expensive section detection
+    _throttleTimer ??= Timer(const Duration(milliseconds: 150), () {
+      _throttleTimer = null;
+      _detectActiveSection();
+    });
+  }
+
+  /// Expensive: walks render tree to find closest section.
+  void _detectActiveSection() {
+    if (!mounted) return;
 
     int newIndex = state.activeIndex;
     double minDistance = double.infinity;
@@ -68,15 +88,14 @@ class ScrollNotifier extends StateNotifier<ScrollState> {
           if (renderObject is RenderBox) {
             distance = renderObject.localToGlobal(Offset.zero).dy.abs();
           } else if (renderObject is RenderSliver) {
-            // final scrollable = Scrollable.of(context);
-            // if (scrollable != null) {
             final viewport = context
                 .findAncestorRenderObjectOfType<RenderViewportBase>();
             if (viewport != null) {
-              final offset = viewport.getOffsetToReveal(renderObject, 0.0);
-              distance = (offset.offset - state.controller.offset).abs();
+              final revealOffset =
+                  viewport.getOffsetToReveal(renderObject, 0.0);
+              distance =
+                  (revealOffset.offset - state.controller.offset).abs();
             }
-            // }
           }
 
           if (distance < minDistance) {
@@ -87,8 +106,8 @@ class ScrollNotifier extends StateNotifier<ScrollState> {
       }
     });
 
-    if (newIndex != state.activeIndex || offset != state.scrollOffset) {
-      state = state.copyWith(activeIndex: newIndex, scrollOffset: offset);
+    if (newIndex != state.activeIndex) {
+      state = state.copyWith(activeIndex: newIndex);
     }
   }
 
@@ -105,7 +124,8 @@ class ScrollNotifier extends StateNotifier<ScrollState> {
 
   @override
   void dispose() {
-    state.controller.removeListener(_scrollListener);
+    _throttleTimer?.cancel();
+    state.controller.removeListener(_onScroll);
     state.controller.dispose();
     super.dispose();
   }
