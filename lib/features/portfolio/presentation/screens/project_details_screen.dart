@@ -55,16 +55,16 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   context.push(
                     '/image-viewer',
                     extra: {
-                      'images': [widget.project.image],
+                      'images': [widget.project.appIcon],
                       'initialIndex': 0,
                       'heroTagPrefix': 'project_image_${widget.project.title}',
                     },
                   );
                 },
                 child: Hero(
-                  tag: 'project_image_${widget.project.title}_0',
+                  tag: 'project_image_${widget.project.title}',
                   child: AppImage(
-                    path: widget.project.image,
+                    path: widget.project.appIcon,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -138,7 +138,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 
   Widget _buildGallery(BuildContext context) {
     return SizedBox(
-      height: 320, // Increased height to accommodate scrollbar
+      height: 320,
       child: Scrollbar(
         controller: _galleryController,
         thumbVisibility: true,
@@ -166,13 +166,10 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Hero(
-                    tag: '${heroTagPrefix}_$index',
-                    child: AppImage(
-                      path: widget.project.appImages[index],
-                      width: 500,
-                      fit: BoxFit.contain,
-                    ),
+                  child: AppImage(
+                    path: widget.project.appImages[index],
+                    width: 500,
+                    fit: BoxFit.contain,
                   ),
                 ),
               );

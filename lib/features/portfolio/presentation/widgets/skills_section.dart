@@ -4,8 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../data/repositories/portfolio_repository.dart';
 import '../../../../core/theme/app_colors.dart';
 
-/// Combined "Architectural Precision" + "Technical Arsenal" + "Professional Trajectory"
-/// section matching the new design. This is now a plain widget (no SliverPersistentHeader).
 class SkillsSection extends StatelessWidget {
   const SkillsSection({super.key});
 
@@ -16,7 +14,6 @@ class SkillsSection extends StatelessWidget {
     final padding = isMobile ? 24.0 : 96.0;
     final skills = PortfolioRepository.data.skills;
 
-    // Organize existing skills into categories
     final coreEngine = <String>[];
     final stateArch = <String>[];
     final ecosystem = <String>[];
@@ -36,17 +33,20 @@ class SkillsSection extends StatelessWidget {
       }
     }
 
-    // Ensure each category has enough items
     if (coreEngine.length < 3) {
-      coreEngine.addAll(['Custom Painters', 'Animations API', 'Method Channels']);
+      coreEngine.addAll([
+        'Custom Painters',
+        'Animations API',
+        'Method Channels',
+      ]);
     }
     if (stateArch.length < 3) {
       stateArch.addAll([
         'BLoC / Cubit',
         'Riverpod',
+        'GetX',
         'Clean Architecture',
         'Dependency Injection',
-        'Freezed',
       ]);
     }
     if (ecosystem.length < 3) {
@@ -59,7 +59,6 @@ class SkillsSection extends StatelessWidget {
       ]);
     }
 
-    // Deduplicate
     final coreSet = coreEngine.toSet().toList();
     final stateSet = stateArch.toSet().toList();
     final ecoSet = ecosystem.toSet().toList();
@@ -69,10 +68,7 @@ class SkillsSection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: padding, vertical: 96),
       decoration: const BoxDecoration(
         border: Border(
-          top: BorderSide(
-            color: AppColors.surfaceContainerHighest,
-            width: 1,
-          ),
+          top: BorderSide(color: AppColors.surfaceContainerHighest, width: 1),
         ),
       ),
       child: Center(
@@ -81,7 +77,6 @@ class SkillsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title
               Text(
                 'Architectural Precision.',
                 style: GoogleFonts.spaceGrotesk(
@@ -108,8 +103,6 @@ class SkillsSection extends StatelessWidget {
               ).animate().fadeIn(delay: 100.ms),
 
               const SizedBox(height: 48),
-
-              // Technical Arsenal header
               Row(
                 children: [
                   Icon(
@@ -132,11 +125,9 @@ class SkillsSection extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              // 3-column category grid
               LayoutBuilder(
                 builder: (context, constraints) {
                   if (constraints.maxWidth < 700) {
-                    // Mobile: stack vertically
                     return Column(
                       children: [
                         _SkillCategory(title: 'CORE ENGINE', items: coreSet),
@@ -199,6 +190,7 @@ class _SkillCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24),
+      width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),

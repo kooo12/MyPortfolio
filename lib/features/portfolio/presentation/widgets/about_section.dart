@@ -30,7 +30,6 @@ class AboutSection extends StatelessWidget {
             direction: isMobile ? Axis.vertical : Axis.horizontal,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left: Title + Description + Tags
               Expanded(
                 flex: isMobile ? 0 : 1,
                 child: Column(
@@ -71,7 +70,6 @@ class AboutSection extends StatelessWidget {
 
                     const SizedBox(height: 32),
 
-                    // Tech Tags
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -85,7 +83,6 @@ class AboutSection extends StatelessWidget {
 
               SizedBox(width: isMobile ? 0 : 48, height: isMobile ? 48 : 0),
 
-              // Right: Code Snippet
               Expanded(
                 flex: isMobile ? 0 : 1,
                 child: const _CodeSnippetPanel(),
@@ -149,7 +146,6 @@ class _CodeSnippetPanelState extends State<_CodeSnippetPanel> {
         ),
         child: Stack(
           children: [
-            // Copy icon
             Positioned(
               top: 0,
               right: 0,
@@ -165,8 +161,6 @@ class _CodeSnippetPanelState extends State<_CodeSnippetPanel> {
                 ),
               ),
             ),
-
-            // Code content
             SelectableText.rich(
               TextSpan(
                 style: GoogleFonts.firaCode(

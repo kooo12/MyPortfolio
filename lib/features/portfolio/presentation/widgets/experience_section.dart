@@ -42,50 +42,117 @@ class ExperienceSection extends ConsumerWidget {
               Text(
                 'Architectural precision honed through years of dedicated cross-platform engineering.',
                 style: GoogleFonts.inter(
-                  color: AppColors.textSecondary, fontSize: 16, height: 1.6,
+                  color: AppColors.textSecondary,
+                  fontSize: 16,
+                  height: 1.6,
                 ),
               ).animate().fadeIn(delay: 100.ms),
               const SizedBox(height: 48),
               ...experiences.asMap().entries.map((entry) {
                 final exp = entry.value;
                 return Container(
-                  padding: const EdgeInsets.only(top: 24),
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: const BoxDecoration(
-                    border: Border(top: BorderSide(color: AppColors.surfaceContainerHighest)),
-                  ),
-                  child: isMobile
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(exp.role, style: GoogleFonts.spaceGrotesk(color: AppColors.textPrimary, fontSize: 24, fontWeight: FontWeight.w600)),
-                            const SizedBox(height: 4),
-                            Text(exp.company, style: GoogleFonts.spaceGrotesk(color: AppColors.primary, fontSize: 16)),
-                            Text(exp.period, style: GoogleFonts.inter(color: AppColors.textDim, fontSize: 14, fontWeight: FontWeight.w500)),
-                            const SizedBox(height: 16),
-                            Text(exp.description, style: GoogleFonts.inter(color: AppColors.textSecondary, fontSize: 16, height: 1.6)),
-                          ],
-                        )
-                      : Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 320,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(exp.role, style: GoogleFonts.spaceGrotesk(color: AppColors.textPrimary, fontSize: 32, fontWeight: FontWeight.w600, height: 1.3)),
-                                  const SizedBox(height: 4),
-                                  Text(exp.company, style: GoogleFonts.spaceGrotesk(color: AppColors.primary, fontSize: 18)),
-                                  Text(exp.period, style: GoogleFonts.inter(color: AppColors.textDim, fontSize: 14, fontWeight: FontWeight.w500)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 48),
-                            Expanded(child: Text(exp.description, style: GoogleFonts.inter(color: AppColors.textSecondary, fontSize: 16, height: 1.6))),
-                          ],
+                      padding: const EdgeInsets.only(top: 24),
+                      margin: const EdgeInsets.only(bottom: 8),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: AppColors.surfaceContainerHighest,
+                          ),
                         ),
-                ).animate().fadeIn(delay: (200 + entry.key * 150).ms).slideY(begin: 0.05);
+                      ),
+                      child: isMobile
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  exp.role,
+                                  style: GoogleFonts.spaceGrotesk(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  exp.company,
+                                  style: GoogleFonts.spaceGrotesk(
+                                    color: AppColors.primary,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  exp.period,
+                                  style: GoogleFonts.inter(
+                                    color: AppColors.textDim,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  exp.description,
+                                  style: GoogleFonts.inter(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 16,
+                                    height: 1.6,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 320,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        exp.role,
+                                        style: GoogleFonts.spaceGrotesk(
+                                          color: AppColors.textPrimary,
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.3,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        exp.company,
+                                        style: GoogleFonts.spaceGrotesk(
+                                          color: AppColors.primary,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Text(
+                                        exp.period,
+                                        style: GoogleFonts.inter(
+                                          color: AppColors.textDim,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 48),
+                                Expanded(
+                                  child: Text(
+                                    exp.description,
+                                    style: GoogleFonts.inter(
+                                      color: AppColors.textSecondary,
+                                      fontSize: 16,
+                                      height: 1.6,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                    )
+                    .animate()
+                    .fadeIn(delay: (200 + entry.key * 150).ms)
+                    .slideY(begin: 0.05);
               }),
             ],
           ),

@@ -76,6 +76,7 @@ class SkillData {
 class ProjectData {
   final String title;
   final String description;
+  final String appIcon;
   final String image;
   final Color color;
   final List<String> techStack;
@@ -92,6 +93,7 @@ class ProjectData {
   const ProjectData({
     required this.title,
     required this.description,
+    required this.appIcon,
     required this.image,
     required this.color,
     required this.techStack,
@@ -123,9 +125,16 @@ class ContactData {
 
 class SocialData {
   final IconData icon;
+  final String name;
+  final String handle;
   final String url;
 
-  const SocialData({required this.icon, required this.url});
+  const SocialData({
+    required this.icon,
+    required this.name,
+    required this.handle,
+    required this.url,
+  });
 }
 
 class PortfolioData {

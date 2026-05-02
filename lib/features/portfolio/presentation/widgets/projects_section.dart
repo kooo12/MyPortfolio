@@ -13,8 +13,9 @@ class ProjectsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isMobile = size.width < 800;
-    final padding = isMobile ? 24.0 : 96.0;
+    final isMobile = size.width < 650;
+    final isTablet = size.width >= 650 && size.width < 1000;
+    final padding = isMobile ? 24.0 : (isTablet ? 48.0 : 96.0);
     final projects = PortfolioRepository.data.projects;
 
     return SliverToBoxAdapter(
@@ -23,10 +24,7 @@ class ProjectsSection extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: padding, vertical: 96),
         decoration: const BoxDecoration(
           border: Border(
-            top: BorderSide(
-              color: AppColors.surfaceContainerHighest,
-              width: 1,
-            ),
+            top: BorderSide(color: AppColors.surfaceContainerHighest, width: 1),
           ),
         ),
         child: Center(
@@ -34,9 +32,8 @@ class ProjectsSection extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 1200),
             child: Column(
               children: [
-                // Section Title
                 Text(
-                  'Selected Works',
+                  'Things I\'ve Built',
                   style: GoogleFonts.spaceGrotesk(
                     color: AppColors.textPrimary,
                     fontSize: isMobile ? 32 : 48,
@@ -48,9 +45,10 @@ class ProjectsSection extends StatelessWidget {
 
                 const SizedBox(height: 48),
 
-                // Bento Grid
                 if (isMobile)
                   _buildMobileGrid(projects, context)
+                else if (isTablet)
+                  _buildTabletGrid(projects, context)
                 else
                   _buildDesktopBentoGrid(projects, context),
               ],
@@ -67,7 +65,6 @@ class ProjectsSection extends StatelessWidget {
   ) {
     return Column(
       children: [
-        // Row 1: Large (2/3) + Small (1/3)
         SizedBox(
           height: 480,
           child: Row(
@@ -96,7 +93,6 @@ class ProjectsSection extends StatelessWidget {
 
         const SizedBox(height: 24),
 
-        // Row 2: Small (1/3) + Large horizontal (2/3)
         SizedBox(
           height: 380,
           child: Row(
@@ -126,17 +122,79 @@ class ProjectsSection extends StatelessWidget {
     );
   }
 
+  Widget _buildTabletGrid(List<ProjectData> projects, BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: 450,
+                child: _BentoProjectCard(
+                  project: projects[0],
+                  isLarge: false,
+                  isHorizontal: false,
+                ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1),
+              ),
+            ),
+            const SizedBox(width: 24),
+            Expanded(
+              child: SizedBox(
+                height: 450,
+                child: _BentoProjectCard(
+                  project: projects.length > 1 ? projects[1] : projects[0],
+                  isLarge: false,
+                  isHorizontal: false,
+                ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        if (projects.length > 2)
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 450,
+                  child: _BentoProjectCard(
+                    project: projects[2],
+                    isLarge: false,
+                    isHorizontal: false,
+                  ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
+                ),
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: SizedBox(
+                  height: 450,
+                  child: _BentoProjectCard(
+                    project: projects.length > 3 ? projects[3] : projects[0],
+                    isLarge: false,
+                    isHorizontal: false,
+                  ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.1),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
   Widget _buildMobileGrid(List<ProjectData> projects, BuildContext context) {
     return Column(
       children: projects
           .map(
             (p) => Padding(
               padding: const EdgeInsets.only(bottom: 24),
-              child: _BentoProjectCard(
-                project: p,
-                isLarge: false,
-                isHorizontal: false,
-              ).animate().fadeIn().slideY(begin: 0.1),
+              child: SizedBox(
+                height: 400,
+                child: _BentoProjectCard(
+                  project: p,
+                  isLarge: false,
+                  isHorizontal: false,
+                ).animate().fadeIn().slideY(begin: 0.1),
+              ),
             ),
           )
           .toList(),
@@ -205,16 +263,8 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Image section
-        Expanded(
-          flex: widget.isLarge ? 3 : 2,
-          child: _buildImageSection(),
-        ),
-        // Content section
-        Expanded(
-          flex: 2,
-          child: _buildContentSection(),
-        ),
+        Expanded(flex: widget.isLarge ? 3 : 2, child: _buildImageSection()),
+        Expanded(flex: 2, child: _buildContentSection()),
       ],
     );
   }
@@ -222,9 +272,7 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
   Widget _buildHorizontalLayout() {
     return Row(
       children: [
-        // Image section
         Expanded(child: _buildImageSection()),
-        // Content section
         Expanded(child: _buildContentSection()),
       ],
     );
@@ -239,9 +287,11 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
           )
         : _buildPlaceholder();
 
+    final size = MediaQuery.of(context).size;
+    final isMobile = size.width < 650;
+
     return Stack(
       children: [
-        // Color image (always underneath)
         Positioned.fill(
           child: AnimatedScale(
             scale: _isHovered ? 1.05 : 1.0,
@@ -249,8 +299,7 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
             child: imageWidget,
           ),
         ),
-        // Grayscale overlay that fades out on hover
-        if (widget.project.image.isNotEmpty)
+        if (widget.project.image.isNotEmpty && !isMobile)
           Positioned.fill(
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 500),
@@ -261,10 +310,26 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
                 duration: const Duration(milliseconds: 700),
                 child: ColorFiltered(
                   colorFilter: const ColorFilter.matrix(<double>[
-                    0.2126, 0.7152, 0.0722, 0, 0,
-                    0.2126, 0.7152, 0.0722, 0, 0,
-                    0.2126, 0.7152, 0.0722, 0, 0,
-                    0, 0, 0, 0.8, 0,
+                    0.2126,
+                    0.7152,
+                    0.0722,
+                    0,
+                    0,
+                    0.2126,
+                    0.7152,
+                    0.0722,
+                    0,
+                    0,
+                    0.2126,
+                    0.7152,
+                    0.0722,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0.8,
+                    0,
                   ]),
                   child: AppImage(
                     path: widget.project.image,
@@ -275,14 +340,23 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
               ),
             ),
           ),
-        // Blue tint overlay that fades out on hover
         Positioned.fill(
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
             opacity: _isHovered ? 0.0 : 1.0,
-            child: Container(
-              color: AppColors.primary.withValues(alpha: 0.1),
+            child: Container(color: AppColors.primary.withValues(alpha: 0.1)),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          child: Hero(
+            tag: 'project_image_${widget.project.title}',
+            child: AppImage(
+              path: widget.project.appIcon,
+              width: 64,
+              height: 64,
             ),
           ),
         ),
@@ -310,7 +384,6 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Title row with link icon for large cards
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -346,10 +419,9 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
 
           const SizedBox(height: 12),
 
-          // Description
           Text(
             widget.project.description,
-            maxLines: widget.isLarge ? 3 : 2,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.inter(
               color: AppColors.textSecondary,
@@ -360,35 +432,35 @@ class _BentoProjectCardState extends State<_BentoProjectCard> {
 
           if (widget.isLarge) ...[
             const SizedBox(height: 16),
-            // Tech stack chips
             Wrap(
               spacing: 8,
-              children: widget.project.techStack
-                  .take(4)
-                  .map(
-                    (tech) => Text(
-                      tech,
-                      style: GoogleFonts.inter(
-                        color: AppColors.textDim,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  )
-                  .expand(
-                    (widget) => [
-                      widget,
-                      Text(
-                        ' • ',
-                        style: GoogleFonts.inter(
-                          color: AppColors.textDim,
-                          fontSize: 12,
+              children:
+                  widget.project.techStack
+                      .take(4)
+                      .map(
+                        (tech) => Text(
+                          tech,
+                          style: GoogleFonts.inter(
+                            color: AppColors.textDim,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                  .toList()
-                ..removeLast(),
+                      )
+                      .expand(
+                        (widget) => [
+                          widget,
+                          Text(
+                            ' • ',
+                            style: GoogleFonts.inter(
+                              color: AppColors.textDim,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      )
+                      .toList()
+                    ..removeLast(),
             ),
           ],
         ],

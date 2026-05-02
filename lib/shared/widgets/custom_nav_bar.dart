@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_portfolio/core/theme/app_colors.dart';
@@ -40,25 +41,42 @@ class CustomNavBar extends ConsumerWidget {
                 sigmaY: (20 * bgOpacity).clamp(0.01, 20.0),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isMobile ? 24 : 96,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: isMobile ? 24 : 96),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Brand
-                    Text(
-                      'DevPortfolio',
-                      style: GoogleFonts.spaceGrotesk(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.5,
+                    SizedBox(
+                      width: 200,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 400),
+                        switchInCurve: Curves.easeOutCubic,
+                        switchOutCurve: Curves.easeInCubic,
+                        transitionBuilder: (child, animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 0.5),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: Text(
+                          activeIndex > 0 ? 'AUNG KO OO' : 'Flutter Developer',
+                          key: ValueKey<bool>(activeIndex > 0),
+                          style: GoogleFonts.spaceGrotesk(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: activeIndex > 0 ? 1.5 : -0.5,
+                          ),
+                        ),
                       ),
                     ),
 
                     if (!isMobile) ...[
-                      // Nav Links
                       Row(
                         children: [
                           _NavLink(
@@ -92,13 +110,13 @@ class CustomNavBar extends ConsumerWidget {
                         ],
                       ),
 
-                      // Resume Button
                       const _ResumeButton(),
                     ],
 
                     if (isMobile)
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () =>
+                            _showMobileMenu(context, ref, activeIndex),
                         icon: const Icon(Icons.menu, color: Colors.white),
                       ),
                   ],
@@ -106,6 +124,113 @@ class CustomNavBar extends ConsumerWidget {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  void _showMobileMenu(BuildContext context, WidgetRef ref, int activeIndex) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+            border: Border(
+              top: BorderSide(
+                color: Colors.white.withValues(alpha: 0.05),
+                width: 1,
+              ),
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children:
+                  [
+                        Center(
+                          child: Container(
+                            width: 48,
+                            height: 4,
+                            margin: const EdgeInsets.only(bottom: 32),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                        ),
+                        _buildMobileNavItem(
+                          context,
+                          ref,
+                          'Home',
+                          0,
+                          activeIndex,
+                        ),
+                        _buildMobileNavItem(
+                          context,
+                          ref,
+                          'Projects',
+                          2,
+                          activeIndex,
+                        ),
+                        _buildMobileNavItem(
+                          context,
+                          ref,
+                          'Experience',
+                          3,
+                          activeIndex,
+                        ),
+                        _buildMobileNavItem(
+                          context,
+                          ref,
+                          'Contact',
+                          4,
+                          activeIndex,
+                        ),
+                        const SizedBox(height: 32),
+                        const Center(child: _ResumeButton()),
+                        const SizedBox(height: 16),
+                      ]
+                      .animate(interval: 50.ms)
+                      .slideY(begin: 0.2, end: 0, curve: Curves.easeOutCubic)
+                      .fadeIn(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMobileNavItem(
+    BuildContext context,
+    WidgetRef ref,
+    String label,
+    int index,
+    int activeIndex,
+  ) {
+    final isActive = activeIndex == index;
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+        ref.read(scrollProvider.notifier).scrollToSection(index);
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Text(
+          label,
+          style: GoogleFonts.spaceGrotesk(
+            color: isActive ? AppColors.accent : AppColors.textSecondary,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+            fontSize: 18,
+            letterSpacing: 1.5,
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -156,8 +281,9 @@ class _NavLinkState extends State<_NavLink> {
                   color: widget.isActive
                       ? AppColors.accent
                       : const Color(0xFF9CA3AF),
-                  fontWeight:
-                      widget.isActive ? FontWeight.w600 : FontWeight.w400,
+                  fontWeight: widget.isActive
+                      ? FontWeight.w600
+                      : FontWeight.w400,
                   fontSize: 14,
                 ),
               ),

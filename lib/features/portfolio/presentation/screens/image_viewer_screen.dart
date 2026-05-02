@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../../../shared/widgets/app_image.dart';
 
@@ -47,9 +48,17 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
                 Navigator.pop(context);
               }
             },
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: widget.images.length,
+            child: ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                  PointerDeviceKind.trackpad,
+                },
+              ),
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: widget.images.length,
               onPageChanged: (index) {
                 setState(() {
                   _currentIndex = index;
@@ -71,6 +80,7 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
                 );
               },
             ),
+          ),
           ),
 
           SafeArea(

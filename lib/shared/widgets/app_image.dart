@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AppImage extends StatelessWidget {
   final String path;
@@ -25,38 +26,49 @@ class AppImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_isNetwork) {
-      return Image.network(
-        path,
-        width: width,
-        height: height,
-        fit: fit,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return placeholder ??
-              Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                      : null,
+    if (path.startsWith('data:')) {
+      return RepaintBoundary(
+        child: Image.network(
+          path,
+          width: width,
+          height: height,
+          fit: fit,
+          errorBuilder: (context, error, stackTrace) =>
+              errorWidget ?? const Center(child: Icon(Icons.error_outline)),
+        ),
+      );
+    } else if (_isNetwork) {
+      return RepaintBoundary(
+        child: CachedNetworkImage(
+          imageUrl: path,
+          width: width,
+          height: height,
+          fit: fit,
+          placeholder: (context, url) =>
+              placeholder ??
+              const Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
                 ),
-              );
-        },
-        errorBuilder: (context, error, stackTrace) {
-          return errorWidget ?? const Center(child: Icon(Icons.error_outline));
-        },
+              ),
+          errorWidget: (context, url, error) =>
+              errorWidget ?? const Center(child: Icon(Icons.error_outline)),
+        ),
       );
     } else {
-      return Image.asset(
-        path,
-        width: width,
-        height: height,
-        fit: fit,
-        errorBuilder: (context, error, stackTrace) {
-          return errorWidget ??
-              const Center(child: Icon(Icons.broken_image_outlined));
-        },
+      return RepaintBoundary(
+        child: Image.asset(
+          path,
+          width: width,
+          height: height,
+          fit: fit,
+          errorBuilder: (context, error, stackTrace) {
+            return errorWidget ??
+                const Center(child: Icon(Icons.broken_image_outlined));
+          },
+        ),
       );
     }
   }

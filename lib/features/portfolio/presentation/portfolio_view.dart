@@ -30,33 +30,22 @@ class PortfolioView extends ConsumerWidget {
             CustomScrollView(
               controller: scrollController,
               slivers: [
-                // Home / Hero
                 SliverToBoxAdapter(
                   child: RepaintBoundary(child: HeroSection(key: keys[0])),
                 ),
-                // About (Built on Precision & Clean Code)
                 SliverToBoxAdapter(
                   child: RepaintBoundary(child: AboutSection(key: keys[1])),
                 ),
-                // Projects (Selected Works — Bento Grid)
                 ProjectsSection(key: keys[2]),
-                // Skills (Architectural Precision + Technical Arsenal)
                 SliverToBoxAdapter(
-                  child: RepaintBoundary(
-                    child: SkillsSection(key: keys[3]),
-                  ),
+                  child: RepaintBoundary(child: SkillsSection(key: keys[3])),
                 ),
-                // Experience (Professional Trajectory)
                 SliverToBoxAdapter(
-                  child: RepaintBoundary(
-                    child: ExperienceSection(),
-                  ),
+                  child: RepaintBoundary(child: ExperienceSection()),
                 ),
-                // Contact (Let's Connect)
                 SliverToBoxAdapter(
                   child: RepaintBoundary(child: ContactSection(key: keys[4])),
                 ),
-                // Footer
                 const SliverToBoxAdapter(child: FooterSection()),
               ],
             ),

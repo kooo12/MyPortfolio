@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../data/repositories/portfolio_repository.dart';
 
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key});
@@ -18,15 +20,21 @@ class FooterSection extends StatelessWidget {
       margin: const EdgeInsets.only(top: 80),
       decoration: BoxDecoration(
         color: const Color(0xFF121212),
-        border: const Border(
-          top: BorderSide(color: Colors.white10),
-        ),
+        border: const Border(top: BorderSide(color: Colors.white10)),
       ),
       child: isMobile ? _buildMobile() : _buildDesktop(),
     );
   }
 
+  Future<void> _launchUrl(String urlString) async {
+    final url = Uri.parse(urlString);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    }
+  }
+
   Widget _buildDesktop() {
+    final socials = PortfolioRepository.data.contact.socials;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -39,31 +47,29 @@ class FooterSection extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        Row(
-          children: [
-            _FooterLink(label: 'GitHub'),
-            const SizedBox(width: 24),
-            _FooterLink(label: 'LinkedIn'),
-            const SizedBox(width: 24),
-            _FooterLink(label: 'Twitter'),
-          ],
+        Wrap(
+          spacing: 24,
+          children: socials.map((s) => _FooterLink(
+            label: s.name,
+            onTap: () => _launchUrl(s.url),
+          )).toList(),
         ),
       ],
     );
   }
 
   Widget _buildMobile() {
+    final socials = PortfolioRepository.data.contact.socials;
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _FooterLink(label: 'GitHub'),
-            const SizedBox(width: 24),
-            _FooterLink(label: 'LinkedIn'),
-            const SizedBox(width: 24),
-            _FooterLink(label: 'Twitter'),
-          ],
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 24,
+          runSpacing: 16,
+          children: socials.map((s) => _FooterLink(
+            label: s.name,
+            onTap: () => _launchUrl(s.url),
+          )).toList(),
         ),
         const SizedBox(height: 24),
         Text(
@@ -82,7 +88,8 @@ class FooterSection extends StatelessWidget {
 
 class _FooterLink extends StatefulWidget {
   final String label;
-  const _FooterLink({required this.label});
+  final VoidCallback? onTap;
+  const _FooterLink({required this.label, this.onTap});
 
   @override
   State<_FooterLink> createState() => _FooterLinkState();
@@ -94,23 +101,25 @@ class _FooterLinkState extends State<_FooterLink> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
+      cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedDefaultTextStyle(
-        duration: const Duration(milliseconds: 200),
-        style: GoogleFonts.spaceGrotesk(
-          color: _isHovered
-              ? AppColors.accent
-              : const Color(0xFF4B5563),
-          fontSize: 14,
-          letterSpacing: 2,
-          fontWeight: FontWeight.w500,
-          decoration: _isHovered
-              ? TextDecoration.underline
-              : TextDecoration.none,
-          decorationColor: AppColors.accent,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 200),
+          style: GoogleFonts.spaceGrotesk(
+            color: _isHovered ? AppColors.accent : const Color(0xFF4B5563),
+            fontSize: 14,
+            letterSpacing: 2,
+            fontWeight: FontWeight.w500,
+            decoration: _isHovered
+                ? TextDecoration.underline
+                : TextDecoration.none,
+            decorationColor: AppColors.accent,
+          ),
+          child: Text(widget.label.toUpperCase()),
         ),
-        child: Text(widget.label.toUpperCase()),
       ),
     );
   }

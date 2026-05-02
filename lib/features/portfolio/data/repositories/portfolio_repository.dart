@@ -116,7 +116,9 @@ class PortfolioRepository {
             "A music player app with a modern glamorous UI and smooth animations. Features smooth animations and offline support. It supports mp3, wav, m4a, and other audio formats.",
         image:
             // 'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/app_icon.png',
-            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/velo_promotional_image.png',
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/velo_poster.png?updatedAt=1777713525688',
+        appIcon:
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/app_icon.png',
         color: AppColors.primary,
         techStack: [
           "Flutter",
@@ -148,7 +150,8 @@ class PortfolioRepository {
           "Admin access for push notifications, manage users and fcm tokens",
         ],
         appImages: [
-          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/app_icon.png',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/velo_poster.png?updatedAt=1777713525688',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/velo_poster_library.png?updatedAt=1777713525266',
           'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/Velo%20Music%20Player/velo_promotional_image.png',
         ],
         playStoreUrl:
@@ -162,6 +165,8 @@ class PortfolioRepository {
         description:
             "A comprehensive fuel management system for logistics companies, featuring real-time tracking, automated reporting, and driver management. Built with Flutter for cross-platform support.A full-stack logistics and fuel distribution platform for businesses and transportation fleets",
         image:
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/HtunPauk/htunpauk_store_icon-2.png',
+        appIcon:
             'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/HtunPauk/htunpauk_store_icon-2.png',
         color: AppColors.primary,
         techStack: [
@@ -211,6 +216,8 @@ class PortfolioRepository {
         image:
             // 'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu_logo.png',
             'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu1.png?updatedAt=1770569033119',
+        appIcon:
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/MeexU/meexu_logo.png?updatedAt=1770570761649',
         color: AppColors.accent,
         techStack: ["Flutter", "GetX", "Socket.io", "REST APIs", "Firebase"],
         category: 'Client Project',
@@ -241,6 +248,7 @@ class PortfolioRepository {
         description:
             'A unified patient telemetry dashboard bridging wearable device data with clinical backend systems via WebSockets, ensuring zero-latency updates.',
         image: '',
+        appIcon: '',
         color: AppColors.primary,
         techStack: [
           "Flutter",
@@ -270,18 +278,26 @@ class PortfolioRepository {
       socials: [
         SocialData(
           icon: FontAwesomeIcons.github,
+          name: 'GitHub',
+          handle: '@kooo12',
           url: 'https://github.com/kooo12',
         ),
         SocialData(
           icon: FontAwesomeIcons.linkedin,
+          name: 'LinkedIn',
+          handle: 'in/aung-ko-oo',
           url: 'https://www.linkedin.com/in/aung-ko-oo-042342242/',
         ),
         SocialData(
           icon: FontAwesomeIcons.facebook,
+          name: 'Facebook',
+          handle: '@kooo1210',
           url: 'https://facebook.com/kooo1210',
         ),
         SocialData(
           icon: FontAwesomeIcons.telegram,
+          name: 'Telegram',
+          handle: '@kooo2109',
           url: 'https://t.me/kooo2109',
         ),
       ],
