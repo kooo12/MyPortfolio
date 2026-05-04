@@ -12,25 +12,18 @@ final scrollProvider = StateNotifierProvider<ScrollNotifier, ScrollState>((
 class ScrollState {
   final ScrollController controller;
   final int activeIndex;
-  final double scrollOffset;
   final Map<int, GlobalKey> sectionKeys;
 
   ScrollState({
     required this.controller,
     this.activeIndex = 0,
-    this.scrollOffset = 0,
     required this.sectionKeys,
   });
 
-  ScrollState copyWith({
-    int? activeIndex,
-    double? scrollOffset,
-    Map<int, GlobalKey>? sectionKeys,
-  }) {
+  ScrollState copyWith({int? activeIndex, Map<int, GlobalKey>? sectionKeys}) {
     return ScrollState(
       controller: controller,
       activeIndex: activeIndex ?? this.activeIndex,
-      scrollOffset: scrollOffset ?? this.scrollOffset,
       sectionKeys: sectionKeys ?? this.sectionKeys,
     );
   }
@@ -55,24 +48,13 @@ class ScrollNotifier extends StateNotifier<ScrollState> {
     state.controller.addListener(_onScroll);
   }
 
-  /// Lightweight listener — only updates offset for nav bar opacity.
-  /// Section detection is throttled to run at most every 150ms.
   void _onScroll() {
-    final offset = state.controller.offset;
-
-    // Always update offset (cheap — just a double comparison)
-    if ((offset - state.scrollOffset).abs() > 2) {
-      state = state.copyWith(scrollOffset: offset);
-    }
-
-    // Throttle the expensive section detection
     _throttleTimer ??= Timer(const Duration(milliseconds: 150), () {
       _throttleTimer = null;
       _detectActiveSection();
     });
   }
 
-  /// Expensive: walks render tree to find closest section.
   void _detectActiveSection() {
     if (!mounted) return;
 
@@ -86,15 +68,28 @@ class ScrollNotifier extends StateNotifier<ScrollState> {
         if (renderObject != null) {
           double distance = 0;
           if (renderObject is RenderBox) {
-            distance = renderObject.localToGlobal(Offset.zero).dy.abs();
+            final RenderAbstractViewport? viewport = RenderAbstractViewport.of(
+              renderObject,
+            );
+            if (viewport != null) {
+              final RevealedOffset offsetToReveal = viewport.getOffsetToReveal(
+                renderObject,
+                0.0,
+              );
+              distance = (offsetToReveal.offset - state.controller.offset)
+                  .abs();
+            } else {
+              distance = renderObject.localToGlobal(Offset.zero).dy.abs();
+            }
           } else if (renderObject is RenderSliver) {
             final viewport = context
                 .findAncestorRenderObjectOfType<RenderViewportBase>();
             if (viewport != null) {
-              final revealOffset =
-                  viewport.getOffsetToReveal(renderObject, 0.0);
-              distance =
-                  (revealOffset.offset - state.controller.offset).abs();
+              final revealOffset = viewport.getOffsetToReveal(
+                renderObject,
+                0.0,
+              );
+              distance = (revealOffset.offset - state.controller.offset).abs();
             }
           }
 

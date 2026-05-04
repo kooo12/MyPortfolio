@@ -11,118 +11,123 @@ class CustomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scrollState = ref.watch(scrollProvider);
-    final activeIndex = scrollState.activeIndex;
-    final scrollOffset = scrollState.scrollOffset;
+    final scrollController = ref.watch(
+      scrollProvider.select((s) => s.controller),
+    );
+    final activeIndex = ref.watch(scrollProvider.select((s) => s.activeIndex));
     final size = MediaQuery.of(context).size;
     final isMobile = size.width < 800;
-
-    final bgOpacity = (scrollOffset / 200).clamp(0.0, 0.8);
 
     return Positioned(
       top: 0,
       left: 0,
       right: 0,
-      child: RepaintBoundary(
-        child: Container(
-          height: 80,
-          decoration: BoxDecoration(
-            color: const Color(0xFF121212).withValues(alpha: bgOpacity),
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.white.withValues(alpha: 0.05 * bgOpacity),
+      child: ListenableBuilder(
+        listenable: scrollController,
+        builder: (context, child) {
+          final scrollOffset = scrollController.hasClients
+              ? scrollController.offset
+              : 0.0;
+          final bgOpacity = (scrollOffset / 200).clamp(0.0, 0.8);
+
+          return RepaintBoundary(
+            child: Container(
+              height: 80,
+              decoration: BoxDecoration(
+                color: const Color(0xFF121212).withValues(alpha: bgOpacity),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.05 * bgOpacity),
+                  ),
+                ),
               ),
-            ),
-          ),
-          child: ClipRect(
-            child: BackdropFilter(
-              filter: ui.ImageFilter.blur(
-                sigmaX: (20 * bgOpacity).clamp(0.01, 20.0),
-                sigmaY: (20 * bgOpacity).clamp(0.01, 20.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: isMobile ? 24 : 96),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 200,
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 400),
-                        switchInCurve: Curves.easeOutCubic,
-                        switchOutCurve: Curves.easeInCubic,
-                        transitionBuilder: (child, animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(0, 0.5),
-                                end: Offset.zero,
-                              ).animate(animation),
-                              child: child,
-                            ),
-                          );
-                        },
-                        child: Text(
-                          activeIndex > 0 ? 'AUNG KO OO' : 'Flutter Developer',
-                          key: ValueKey<bool>(activeIndex > 0),
-                          style: GoogleFonts.spaceGrotesk(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: activeIndex > 0 ? 1.5 : -0.5,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    if (!isMobile) ...[
-                      Row(
-                        children: [
-                          _NavLink(
-                            label: 'Home',
-                            isActive: activeIndex == 0,
-                            onTap: () => ref
-                                .read(scrollProvider.notifier)
-                                .scrollToSection(0),
-                          ),
-                          _NavLink(
-                            label: 'Projects',
-                            isActive: activeIndex == 2,
-                            onTap: () => ref
-                                .read(scrollProvider.notifier)
-                                .scrollToSection(2),
-                          ),
-                          _NavLink(
-                            label: 'Experience',
-                            isActive: activeIndex == 3,
-                            onTap: () => ref
-                                .read(scrollProvider.notifier)
-                                .scrollToSection(3),
-                          ),
-                          _NavLink(
-                            label: 'Contact',
-                            isActive: activeIndex == 4,
-                            onTap: () => ref
-                                .read(scrollProvider.notifier)
-                                .scrollToSection(4),
-                          ),
-                        ],
-                      ),
-
-                      const _ResumeButton(),
-                    ],
-
-                    if (isMobile)
-                      IconButton(
-                        onPressed: () =>
-                            _showMobileMenu(context, ref, activeIndex),
-                        icon: const Icon(Icons.menu, color: Colors.white),
-                      ),
-                  ],
+              child: ClipRect(
+                child: BackdropFilter(
+                  filter: ui.ImageFilter.blur(
+                    sigmaX: (20 * bgOpacity).clamp(0.01, 20.0),
+                    sigmaY: (20 * bgOpacity).clamp(0.01, 20.0),
+                  ),
+                  child: child,
                 ),
               ),
             ),
+          );
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: isMobile ? 24 : 96),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 200,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 400),
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeInCubic,
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, 0.5),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Text(
+                    activeIndex > 0 ? 'AUNG KO OO' : 'Flutter Developer',
+                    key: ValueKey<bool>(activeIndex > 0),
+                    style: GoogleFonts.spaceGrotesk(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: activeIndex > 0 ? 1.5 : -0.5,
+                    ),
+                  ),
+                ),
+              ),
+
+              if (!isMobile) ...[
+                Row(
+                  children: [
+                    _NavLink(
+                      label: 'Home',
+                      isActive: activeIndex == 0,
+                      onTap: () =>
+                          ref.read(scrollProvider.notifier).scrollToSection(0),
+                    ),
+                    _NavLink(
+                      label: 'Projects',
+                      isActive: activeIndex == 2,
+                      onTap: () =>
+                          ref.read(scrollProvider.notifier).scrollToSection(2),
+                    ),
+                    _NavLink(
+                      label: 'Experience',
+                      isActive: activeIndex == 3,
+                      onTap: () =>
+                          ref.read(scrollProvider.notifier).scrollToSection(3),
+                    ),
+                    _NavLink(
+                      label: 'Contact',
+                      isActive: activeIndex == 4,
+                      onTap: () =>
+                          ref.read(scrollProvider.notifier).scrollToSection(4),
+                    ),
+                  ],
+                ),
+
+                const _ResumeButton(),
+              ],
+
+              if (isMobile)
+                IconButton(
+                  onPressed: () => _showMobileMenu(context, ref, activeIndex),
+                  icon: const Icon(Icons.menu, color: Colors.white),
+                ),
+            ],
           ),
         ),
       ),

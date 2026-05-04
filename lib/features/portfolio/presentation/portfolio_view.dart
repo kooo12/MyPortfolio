@@ -17,9 +17,10 @@ class PortfolioView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scrollState = ref.watch(scrollProvider);
-    final scrollController = scrollState.controller;
-    final keys = scrollState.sectionKeys;
+    final scrollController = ref.watch(
+      scrollProvider.select((s) => s.controller),
+    );
+    final keys = ref.watch(scrollProvider.select((s) => s.sectionKeys));
 
     return Scaffold(
       body: ResponsiveBreakpoints.builder(
@@ -40,7 +41,7 @@ class PortfolioView extends ConsumerWidget {
                 SliverToBoxAdapter(
                   child: RepaintBoundary(child: SkillsSection(key: keys[3])),
                 ),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: RepaintBoundary(child: ExperienceSection()),
                 ),
                 SliverToBoxAdapter(
