@@ -9,7 +9,7 @@ class PortfolioRepository {
       title: 'HI, I AM AUNG KO OO',
       subtitle: 'Engineering Fluid\nCross-Platform\nExperiences',
       description:
-          'Mid-Level Flutter Developer specializing in high-performance architectural patterns, clean code, and seamless UI/UX across iOS and Android ecosystems.',
+          'Flutter Developer specializing in high-performance architectural patterns, clean code, and seamless UI/UX across iOS and Android ecosystems.',
       profileImg: 'assets/profile.png',
     ),
     about: AboutData(
@@ -28,7 +28,7 @@ class PortfolioRepository {
     experiences: [
       ExperienceData(
         company: 'Tech Plus Solutions (TPS)',
-        role: 'Mid-Senior Flutter Developer',
+        role: 'Flutter Developer (Remote)',
         period: '2022 - Present',
         website: 'https://techplussolution.com/',
         description:
@@ -45,6 +45,18 @@ class PortfolioRepository {
           'Optimized app performance, reducing startup time by 40%.',
           'Implemented a robust CI/CD pipeline for automated testing and deployment.',
         ],
+        color: AppColors.primary,
+      ),
+      ExperienceData(
+        company: 'Anycall Mobile',
+        role: 'Senior Technician',
+        period: '2022 - Present',
+        website: 'https://anycallmobilemm.com',
+        description:
+            'Diagnose and repair smartphones and tablets (hardware & software),including component- and board-level troubleshooting.\nPerform advanced software repair procedures including firmware flashing, OS reinstallation, FRP (Factory Reset Protection) bypass, boot loop fixing, device unlocking, and system recovery for Android and iOS devices\nInstall, configure, and troubleshoot operating systems (Windows, macOS) and related applications\nConduct device diagnostics using professional tools to identify hardware and software faults efficiently\nManage parts inventory and optimize repair workflows to improve turnaround time\nProvide technical support and consultation to customers for both mobile and computer-related issues',
+        companyLogo:
+            "https://play-lh.googleusercontent.com/UqT6WqPtqDT8v_lYY6tiaFNzJSr-Uf0lfsQK1HF79EUXC4-1qGDAS8jU8en-Gm1D-wM",
+        achievements: [],
         color: AppColors.primary,
       ),
       ExperienceData(
@@ -244,31 +256,50 @@ class PortfolioRepository {
             "https://play.google.com/store/apps/details?id=com.tps.meexu&hl=en",
       ),
       ProjectData(
-        title: 'Vitals Health Portal',
+        title: 'OurSpace',
         description:
-            'A unified patient telemetry dashboard bridging wearable device data with clinical backend systems via WebSockets, ensuring zero-latency updates.',
-        image: '',
-        appIcon: '',
+            'OurSpace is a private, romantic application dedicated to couples. It provides a secure, shared environment featuring real-time encrypted chat, anniversary tracking, shared moments, and interactive location sharing, all wrapped in a beautifully modern and intuitive UI.',
+        image:
+            'https://ik.imagekit.io/aungkooo/ourspace_landing/couple_in_room.png?updatedAt=1777564235538',
+        appIcon:
+            'https://ik.imagekit.io/aungkooo/ourspace_landing/ourspace_icon.png',
         color: AppColors.primary,
         techStack: [
           "Flutter",
-          "HealthKit/GoogleFit",
+          "Firebase",
+          "Firestore",
           "WebSockets",
           "REST APIs",
+          "Riverpod",
+          "Drift (SQLite)",
+          "E2E Encryption",
+          "Maps",
+          "Animations",
         ],
-        category: 'Personal Project',
+        category: 'Mobile',
         responsibilities: [
-          "Designed and built real-time telemetry UI",
-          "Integrated wearable device APIs",
-          "Implemented WebSocket-based live data streaming",
+          "Developed the complete UI and robust state management using Riverpod.",
+          "Integrated Firebase Firestore, Auth, Storage, and Messaging for backend services.",
+          "Implemented real-time messaging architecture using Socket.IO.",
+          "Engineered secure End-to-End Encryption (X25519 + AES-256-GCM) for maximum user privacy.",
+          "Developed offline support and local data persistence using Drift (SQLite).",
+          "Implemented background services, rich push notifications, and home screen widgets.",
+          "Integrated live location tracking and interactive mapping features.",
         ],
         coreFeatures: [
-          "Real-time health data visualization",
-          "Wearable device integration",
-          "Clinical-grade data accuracy",
-          "Zero-latency WebSocket updates",
+          "Private real-time chat with End-to-End Encryption (E2EE)",
+          "Special dates, milestones, and anniversary tracking",
+          "Real-time location sharing and background updates",
+          "Home screen widgets for quick access to couple's moments",
+          "Secure offline access with local chat database",
+          "Push notifications for messages, events, and reminders",
+          "Smooth UI animations",
         ],
-        appImages: [],
+        appImages: [
+          'https://ik.imagekit.io/aungkooo/ourspace_landing/milestone_ourspace.png?updatedAt=1778470985029',
+          'https://ik.imagekit.io/aungkooo/ourspace_landing/map_ourspace.png?updatedAt=1778427017081',
+        ],
+        webUrl: "https://ourspace.aungkooo.com",
       ),
     ],
     contact: ContactData(

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ContactService {
-  static const String formspreeId = 'mblnkzwa';
+  static const String formspreeId = 'mqejnpze';
   static const String apiEndpoint = 'https://formspree.io/f/';
 
   Future<Map<String, dynamic>> sendMessage({
