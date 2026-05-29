@@ -263,7 +263,7 @@ class PortfolioRepository {
         description:
             'OurSpace is a private, romantic application dedicated to couples. It provides a secure, shared environment featuring real-time encrypted chat, anniversary tracking, shared moments, and interactive location sharing, all wrapped in a beautifully modern and intuitive UI.',
         image:
-            'https://ik.imagekit.io/aungkooo/ourspace_landing/couple_in_room.png?updatedAt=1777564235538',
+            'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/OurSpace/cb7d73ee-1c3c-4516-b7f8-2075d44be188.jpg',
         appIcon:
             'https://ik.imagekit.io/aungkooo/ourspace_landing/ourspace_icon.png',
         color: AppColors.primary,
@@ -299,8 +299,10 @@ class PortfolioRepository {
           "Smooth UI animations",
         ],
         appImages: [
-          'https://ik.imagekit.io/aungkooo/ourspace_landing/milestone_ourspace.png?updatedAt=1778470985029',
-          'https://ik.imagekit.io/aungkooo/ourspace_landing/map_ourspace.png?updatedAt=1778427017081',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/OurSpace/wmremove-transformed.png',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/OurSpace/cb7d73ee-1c3c-4516-b7f8-2075d44be188.jpg',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/OurSpace/wmremove-transformed%20(1).png',
+          'https://ik.imagekit.io/aungkooo/PortfolioProjectImages/OurSpace/f18284e5-cc97-46f1-8cbb-118e8d378111.jpg',
         ],
         webUrl: "https://ourspace.aungkooo.com",
       ),
