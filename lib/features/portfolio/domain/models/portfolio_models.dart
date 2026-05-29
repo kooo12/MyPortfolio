@@ -18,6 +18,8 @@ class AboutData {
   final String title;
   final String bio1;
   final String bio2;
+  final String bio3;
+  final String? bio3Title;
   final List<String> tags;
   final List<StatData> stats;
 
@@ -25,6 +27,8 @@ class AboutData {
     required this.title,
     required this.bio1,
     required this.bio2,
+    required this.bio3,
+    this.bio3Title,
     required this.tags,
     required this.stats,
   });

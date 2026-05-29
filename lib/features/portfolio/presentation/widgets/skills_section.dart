@@ -35,14 +35,15 @@ class SkillsSection extends StatelessWidget {
 
     if (coreEngine.length < 3) {
       coreEngine.addAll([
-        'Custom Painters',
-        'Animations API',
+        // 'Custom Painters',
+        // 'Animations API',
         'Method Channels',
       ]);
     }
     if (stateArch.length < 3) {
       stateArch.addAll([
-        'BLoC / Cubit',
+        // 'BLoC / Cubit',
+        'Provider',
         'Riverpod',
         'GetX',
         'Clean Architecture',
@@ -53,9 +54,12 @@ class SkillsSection extends StatelessWidget {
       ecosystem.addAll([
         'Firebase',
         'REST APIs',
-        'Codemagic CI/CD',
-        'Supabase',
-        'Sentry',
+        'App Deployment',
+        'App Store Connect',
+        'Google Play Console',
+        // 'Codemagic CI/CD',
+        // 'Supabase',
+        // 'Sentry',
       ]);
     }
 

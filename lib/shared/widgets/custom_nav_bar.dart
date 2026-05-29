@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_portfolio/core/theme/app_colors.dart';
 import 'package:new_portfolio/features/portfolio/presentation/providers/scroll_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomNavBar extends ConsumerWidget {
   const CustomNavBar({super.key});
@@ -320,32 +321,52 @@ class _ResumeButton extends StatefulWidget {
 class _ResumeButtonState extends State<_ResumeButton> {
   bool _isHovered = false;
 
+  Future<void> _downloadResume() async {
+    final url = Uri.parse('https://ik.imagekit.io/aungkooo/resume.pdf');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open resume link.'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
+      cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-        decoration: BoxDecoration(
-          color: AppColors.primaryContainer,
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: _isHovered
-              ? [
-                  BoxShadow(
-                    color: AppColors.primaryContainer.withValues(alpha: 0.3),
-                    blurRadius: 15,
-                  ),
-                ]
-              : [],
-        ),
-        child: Text(
-          'Resume',
-          style: GoogleFonts.spaceGrotesk(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
+      child: GestureDetector(
+        onTap: _downloadResume,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          decoration: BoxDecoration(
+            color: AppColors.primaryContainer,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: _isHovered
+                ? [
+                    BoxShadow(
+                      color: AppColors.primaryContainer.withValues(alpha: 0.3),
+                      blurRadius: 15,
+                    ),
+                  ]
+                : [],
+          ),
+          child: Text(
+            'Resume',
+            style: GoogleFonts.spaceGrotesk(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

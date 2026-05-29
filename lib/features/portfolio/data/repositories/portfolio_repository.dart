@@ -18,6 +18,9 @@ class PortfolioRepository {
           'My approach to mobile development roots deeply in architectural precision. I believe that a fluid user experience is directly tied to the robustness of the underlying codebase. Leveraging advanced Flutter capabilities, I architect scalable solutions that balance immediate feature delivery with long-term maintainability.',
       bio2:
           'From complex state management to custom render objects, my focus remains on creating premium, jank-free interfaces that feel native to every platform.',
+      bio3:
+          'My software expertise is uniquely grounded by my concurrent experience as a mobile and PC technician at Anycall Mobile. Spending years troubleshooting physical hardware, diagnosing OS failures, and resolving deep system errors across Windows and macOS has fundamentally changed how I approach software engineering. Because I understand exactly how applications consume memory, battery, and CPU in the real world, I write code that is not only visually engaging with modern UI designs, but also highly optimized, resource-efficient, and exceptionally crash-resistant. Having built a strong foundation at the intersection of hardware and software, I am now stepping away from device repair to dedicate 100% of my professional energy to mobile engineering. I am eager to bring my independent problem-solving skills, deep system-level awareness, and passion for Flutter development to a full-time engineering role where I can push the boundaries of cross-platform apps.',
+      bio3Title: 'From Systems Hardware to Flutter Architecture',
       tags: ['Flutter', 'Dart', 'REST API', 'Firebase', 'Clean Architecture'],
       stats: [
         StatData(number: '3+', label: 'Years Experience'),
