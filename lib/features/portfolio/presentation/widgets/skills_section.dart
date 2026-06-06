@@ -35,9 +35,10 @@ class SkillsSection extends StatelessWidget {
 
     if (coreEngine.length < 3) {
       coreEngine.addAll([
+        'Clean Architecture',
         // 'Custom Painters',
         // 'Animations API',
-        'Method Channels',
+        // 'Method Channels',
       ]);
     }
     if (stateArch.length < 3) {
@@ -48,6 +49,7 @@ class SkillsSection extends StatelessWidget {
         'GetX',
         'Clean Architecture',
         'Dependency Injection',
+        'Unit Testing',
       ]);
     }
     if (ecosystem.length < 3) {

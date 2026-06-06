@@ -102,13 +102,13 @@ class PortfolioRepository {
         description:
             'Proficient in using Firestore, Cloud Functions, Auth, and Storage for scalable serverless backends.',
       ),
-      SkillData(
-        name: 'Clean Arch',
-        role: 'Scalable Design Pattern',
-        level: '04',
-        description:
-            'State Management: BLoC, Riverpod, GetX.\nFocus on testability and separation of concerns.',
-      ),
+      // SkillData(
+      //   name: 'Clean Arch',
+      //   role: 'Scalable Design Pattern',
+      //   level: '04',
+      //   description:
+      //       'State Management: BLoC, Riverpod, GetX.\nFocus on testability and separation of concerns.',
+      // ),
       SkillData(
         name: 'Rest API',
         role: 'Network Communication',
@@ -282,9 +282,9 @@ class PortfolioRepository {
         category: 'Mobile',
         responsibilities: [
           "Developed the complete UI and robust state management using Riverpod.",
-          "Integrated Firebase Firestore, Auth, Storage, and Messaging for backend services.",
-          "Implemented real-time messaging architecture using Socket.IO.",
-          "Engineered secure End-to-End Encryption (X25519 + AES-256-GCM) for maximum user privacy.",
+          "Integrated Firebase Firestore, Auth, ImageKit, Storage, and Socket.IO for backend services.",
+          "Implemented messaging architecture using Socket.IO.",
+          "Engineered secure End-to-End Encryption (X25519 + AES-256-GCM) for maximum user privacy in Local Database.",
           "Developed offline support and local data persistence using Drift (SQLite).",
           "Implemented background services, rich push notifications, and home screen widgets.",
           "Integrated live location tracking and interactive mapping features.",
@@ -308,7 +308,7 @@ class PortfolioRepository {
       ),
     ],
     contact: ContactData(
-      email: 'agkooo.ako36@gmail.com',
+      email: 'agkooo.ako36@gmail.com\ncontact@aungkooo.com',
       phone: '+95 9 969 687 330',
       location: 'Mandalay, Myanmar',
       socials: [
